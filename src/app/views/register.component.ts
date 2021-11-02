@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { Form, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 
 @Component({
   selector: 'ac-sign-in',
@@ -7,11 +7,19 @@ import { FormControl, Validators } from '@angular/forms';
   <div>Enter your details</div>
   <form>
   <mat-form-field class="full-width" appearance="fill">
-      <mat-label>Username</mat-label>
-      <input type="username" matInput [formControl]="usernameFormControl">
-      <mat-icon *ngIf="usernameFormControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="clearHandler(usernameFormControl)">close</mat-icon>
-      <mat-error *ngIf="usernameFormControl.hasError('required')">
-        Username is <strong>required</strong>
+      <mat-label>Name</mat-label>
+      <input type="name" matInput [formControl]="nameFormControl">
+      <mat-icon *ngIf="nameFormControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="clearHandler(nameFormControl)">close</mat-icon>
+      <mat-error *ngIf="nameFormControl.hasError('required')">
+        Name is <strong>required</strong>
+      </mat-error>
+  </mat-form-field>
+  <mat-form-field class="full-width" appearance="fill">
+      <mat-label>Surname</mat-label>
+      <input type="surname" matInput [formControl]="surnameFormControl">
+      <mat-icon *ngIf="surnameFormControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="clearHandler(surnameFormControl)">close</mat-icon>
+      <mat-error *ngIf="surnameFormControl.hasError('required')">
+      Surname is <strong>required</strong>
       </mat-error>
   </mat-form-field>
   <mat-form-field class="full-width" appearance="fill">
@@ -35,6 +43,20 @@ import { FormControl, Validators } from '@angular/forms';
           Password is <strong>required</strong>
         </mat-error>
   </mat-form-field>
+
+  <mat-form-field class="full-width" appearance="fill">
+    <mat-label>Repeat password</mat-label>
+      <input [type]='hide_pw ? "password" : "text"' matInput [formControl]="password2FormControl" placeholder="Repeat password">
+      <mat-icon matSuffix aria-label="Show/Hide" (click)="hide_pw=!hide_pw">
+        {{hide_pw ? 'visibility' : 'visibility_off'}}
+      </mat-icon>
+        <mat-error *ngIf="password2FormControl.hasError('childrenNotEqual')">
+          Passwords <strong>do not match</strong>
+        </mat-error>
+        <mat-error *ngIf="password2FormControl.hasError('required')">
+          Please, confirm your password.
+        </mat-error>
+  </mat-form-field>
   <button mat-flat-button color="primary" type="submit" [disabled]="!formIsValid()" class="full-width-button">
     Register
   </button>
@@ -47,7 +69,10 @@ import { FormControl, Validators } from '@angular/forms';
   `]
 })
 export class RegisterComponent {
-  usernameFormControl = new FormControl('', [
+  nameFormControl = new FormControl('', [
+    Validators.required
+  ]);
+  surnameFormControl = new FormControl('', [
     Validators.required
   ]);
   emailFormControl = new FormControl('', [
@@ -57,6 +82,10 @@ export class RegisterComponent {
   passwordFormControl = new FormControl('', [
     Validators.required
   ]);
+  password2FormControl = new FormControl('', [
+    Validators.required
+  ]);
+
   hide_pw = true;
 
   constructor() { }
@@ -68,8 +97,14 @@ export class RegisterComponent {
   formIsValid(){
     if(this.emailFormControl.valid
       && this.passwordFormControl.valid
-      && this.usernameFormControl.valid)
+      && this.nameFormControl.valid)
       return true;
     return false;
   }
+
+  passwordsMatch: ValidatorFn = () => {
+    const isValid = this.passwordFormControl.value === this.password2FormControl.value;
+    return isValid ? null : { childrenNotEqual: true };
+  }
+
 }

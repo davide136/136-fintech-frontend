@@ -8,7 +8,7 @@ import { FormControl, Validators } from '@angular/forms';
   <form>
   <mat-form-field class="full-width" appearance="fill">
       <mat-label>Email</mat-label>
-      <input type="email" matInput [formControl]="emailFormControl" placeholder="Ex. mario@example.com">
+      <input name="email" matInput [formControl]="emailFormControl" placeholder="Ex. mario@example.com">
       <mat-icon *ngIf="emailFormControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="clearHandler(emailFormControl)">close</mat-icon>
       <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
         Please enter a valid email address
@@ -19,7 +19,7 @@ import { FormControl, Validators } from '@angular/forms';
   </mat-form-field>
   <mat-form-field class="full-width" appearance="fill">
     <mat-label>Password</mat-label>
-      <input [type]='hide_pw ? "password" : "text"' matInput [formControl]="passwordFormControl" placeholder="Password">
+      <input [name]='hide_pw ? "password" : "text"' matInput [formControl]="passwordFormControl" placeholder="Password">
       <mat-icon matSuffix aria-label="Show/Hide" (click)="hide_pw=!hide_pw">
         {{hide_pw ? 'visibility' : 'visibility_off'}}
       </mat-icon>
