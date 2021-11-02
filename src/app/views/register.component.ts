@@ -46,20 +46,20 @@ import { Form, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/
 
   <mat-form-field class="full-width" appearance="fill">
     <mat-label>Repeat password</mat-label>
-      <input [type]='hide_pw ? "password" : "text"' matInput [formControl]="password2FormControl" placeholder="Repeat password">
+      <input [type]='hide_pw ? "password" : "text"' matInput [formControl]="password2FormControl" placeholder="Repeat password" (input)='passwordMatch()'>
       <mat-icon matSuffix aria-label="Show/Hide" (click)="hide_pw=!hide_pw">
         {{hide_pw ? 'visibility' : 'visibility_off'}}
       </mat-icon>
         <mat-error *ngIf="password2FormControl.hasError('childrenNotEqual')">
           Passwords <strong>do not match</strong>
         </mat-error>
-        <mat-error *ngIf="password2FormControl.hasError('required')">
-          Please, confirm your password.
-        </mat-error>
   </mat-form-field>
   <button mat-flat-button color="primary" type="submit" [disabled]="!formIsValid()" class="full-width-button">
     Register
   </button>
+  <mat-error *ngIf="!passwordMatch()">
+          Entered passwords are different.
+   </mat-error>
 </form>
   `,
   styles: [`
@@ -69,6 +69,11 @@ import { Form, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/
   `]
 })
 export class RegisterComponent {
+
+  hide_pw = true;
+
+  constructor() { }
+
   nameFormControl = new FormControl('', [
     Validators.required
   ]);
@@ -86,10 +91,6 @@ export class RegisterComponent {
     Validators.required
   ]);
 
-  hide_pw = true;
-
-  constructor() { }
-
   clearHandler(formControl: FormControl){
     formControl.setValue('');
   }
@@ -97,14 +98,15 @@ export class RegisterComponent {
   formIsValid(){
     if(this.emailFormControl.valid
       && this.passwordFormControl.valid
-      && this.nameFormControl.valid)
+      && this.password2FormControl.valid
+      && this.nameFormControl.valid
+      && this.surnameFormControl.valid
+      && this.passwordMatch())
       return true;
     return false;
   }
 
-  passwordsMatch: ValidatorFn = () => {
-    const isValid = this.passwordFormControl.value === this.password2FormControl.value;
-    return isValid ? null : { childrenNotEqual: true };
-  }
+  passwordMatch(){
+    return ( this.passwordFormControl.value === this.password2FormControl.value ) && this.password2FormControl.dirty}
 
 }
