@@ -1,11 +1,4 @@
-import { Component } from '@angular/core';
-import { Form, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-
-@Component({
-  selector: 'ac-sign-in',
-  template: `
-  <div>Enter your details</div>
-  <form>
+<form>
   <mat-form-field class="full-width" appearance="fill">
       <mat-label>Name</mat-label>
       <input type="name" matInput [formControl]="nameFormControl">
@@ -61,52 +54,3 @@ import { Form, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/
           Entered passwords are different.
    </mat-error>
 </form>
-  `,
-  styles: [`
-  div{
-    margin-bottom: 1rem;
-  }
-  `]
-})
-export class RegisterComponent {
-
-  hide_pw = true;
-
-  constructor() { }
-
-  nameFormControl = new FormControl('', [
-    Validators.required
-  ]);
-  surnameFormControl = new FormControl('', [
-    Validators.required
-  ]);
-  emailFormControl = new FormControl('', [
-    Validators.required,
-    Validators.email,
-  ]);
-  passwordFormControl = new FormControl('', [
-    Validators.required
-  ]);
-  password2FormControl = new FormControl('', [
-    Validators.required
-  ]);
-
-  clearHandler(formControl: FormControl){
-    formControl.setValue('');
-  }
-
-  formIsValid(){
-    if(this.emailFormControl.valid
-      && this.passwordFormControl.valid
-      && this.password2FormControl.valid
-      && this.nameFormControl.valid
-      && this.surnameFormControl.valid
-      && this.passwordMatch())
-      return true;
-    return false;
-  }
-
-  passwordMatch(){
-    return ( this.passwordFormControl.value === this.password2FormControl.value ) && this.password2FormControl.dirty}
-
-}

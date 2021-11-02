@@ -1,5 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
-import {MediaMatcher} from '@angular/cdk/layout';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'ac-root',
@@ -14,8 +13,9 @@ import {MediaMatcher} from '@angular/cdk/layout';
       <mat-sidenav #snav [mode]='"over"'
                   fixedTopGap="56">
         <mat-nav-list>
-          <a mat-list-item routerLink='signin' (click)="snav.close()">Sign In</a>
-          <a mat-list-item routerLink='register' (click)="snav.close()">Register</a>
+          <a mat-list-item routerLink='login' (click)="snav.close()">Login</a>
+          <a mat-list-item routerLink='login/signin' (click)="snav.close()">Sign In</a>
+          <a mat-list-item routerLink='login/register' (click)="snav.close()">Register</a>
         </mat-nav-list>
       </mat-sidenav>
       <mat-sidenav-content>
