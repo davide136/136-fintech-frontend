@@ -1,4 +1,4 @@
-import { AppRoutingModule } from './../../../app-routing.module';
+import { AppRoutingModule } from '../../../src/app/app-routing.module';
 import { SignInComponent } from './sign-in.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
   imports: [
     CommonModule,
     AppRoutingModule,
-    
+
   ],
   declarations: [SignInComponent]
 })
