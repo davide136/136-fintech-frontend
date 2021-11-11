@@ -1,22 +1,18 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormField} from "../../models/loginForm";
 import {FormControl} from "@angular/forms";
-import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'ac-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  templateUrl: './login-form.component.html',
+  styleUrls: ['./login-form.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginFormComponent {
   @Input() fields: FormField[] = [];
   @Output() submit = new EventEmitter<boolean>();
   goToRegister: string = "";
 
-  constructor(route: ActivatedRoute) { console.log(route) }
-
-  ngOnInit(): void {
-  }
+  constructor(/*route: ActivatedRoute*/) { /*console.log(route)*/ }
 
   clearHandler(formControl: FormControl) {
     formControl.setValue('');
