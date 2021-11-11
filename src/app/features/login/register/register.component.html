@@ -1,0 +1,38 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+  <mat-form-field appearance="fill">
+    <mat-label>Nome</mat-label>
+    <input matInput formControlName="name">
+    <mat-error *ngIf="form.get('name')!.hasError('required')">Campo richiesto</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Cognome</mat-label>
+    <input matInput formControlName="surname">
+    <mat-error *ngIf="form.get('surname')!.hasError('required')!">Campo richiesto</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Email</mat-label>
+    <input matInput formControlName="email">
+    <mat-error *ngIf="form.get('email')!.hasError('required')">Campo richiesto</mat-error>
+  </mat-form-field>
+
+  <ng-container formGroupName="passwords">
+    <mat-form-field appearance="fill">
+      <mat-label>Password</mat-label>
+      <input matInput formControlName="password">
+      <mat-error *ngIf="form.get('passwords')!.get('password')!.hasError('required')">Campo richiesto</mat-error>
+      <mat-error *ngIf="form.get('passwords')!.get('password')!.hasError('minlength')">Minimo 3 caratteri</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Ripeti password</mat-label>
+      <input matInput formControlName="password2">
+      <mat-error *ngIf="form.get('passwords')!.get('password2')!.hasError('required')">Campo richiesto</mat-error>
+      <mat-error *ngIf="form.get('passwords')!.get('password2')!.hasError('err')">Le password non corrispondono</mat-error>
+    </mat-form-field>
+  </ng-container>
+
+  <button mat-raised-button color="primary" [disabled]="form.invalid">Invia</button>
+</form>

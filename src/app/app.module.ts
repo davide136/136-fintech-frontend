@@ -3,15 +3,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MaterialModule } from './shared/material/material.module';
-import { RegisterComponent } from './views/register.component';
-import { SignInComponent } from './views/sign-in.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { NavbarComponent } from './features/navbar/navbar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    RegisterComponent,
-    SignInComponent,
+    NavbarComponent,
   ],
   imports: [
     BrowserModule,
