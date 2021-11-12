@@ -1,0 +1,17 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+  <mat-form-field appearance="fill">
+    <mat-label>Email</mat-label>
+    <input matInput formControlName="email">
+    <mat-error *ngIf="form.get('email')!.hasError('required')">Campo richiesto</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Password</mat-label>
+    <input matInput formControlName="password">
+    <mat-error *ngIf="form.get('password')!.hasError('required')">Campo richiesto</mat-error>
+    <mat-error *ngIf="form.get('password')!.hasError('minlength')">Minimo 3 caratteri</mat-error>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" [disabled]="form.invalid">Invia</button>
+</form>
