@@ -17,14 +17,19 @@ export class NavbarComponent implements OnInit {
         label: 'Home',
         link: './home',
         index: 0
-      }, {
-        label: 'Sign-In',
+      }/*, {
+        label: 'Accedi',
         link: './sign-in',
         index: 1
       }, {
-        label: 'Register',
+        label: 'Registrati',
         link: './register',
         index: 2
+      }*/,
+      {
+        label: 'Card List',
+        link: './card-list',
+        index: 0
       },
     ];
   }

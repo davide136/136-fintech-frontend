@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, ValidationErrors, Validators } from '@angular/forms';
-import Validation from '../../../shared/validation';
+import Validation from '../../../shared/utils/validation';
 
 @Component({
   selector: 'ac-register',

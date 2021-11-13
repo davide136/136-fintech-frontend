@@ -4,8 +4,10 @@ import {  Component } from '@angular/core';
   selector: 'ac-root',
   template: `
     <ac-navbar></ac-navbar>
-    <router-outlet>
-    </router-outlet>
+    <ac-container>
+      <router-outlet>
+      </router-outlet>
+    </ac-container>
   `,
   styles: [`
     `]

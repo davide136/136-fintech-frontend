@@ -11,6 +11,7 @@ export class SignInComponent implements OnInit {
     email: ['', [Validators.required]],
     password: ['', [Validators.required, Validators.minLength(3)]],
   });
+  visibility = false;
 
   constructor(private fb: FormBuilder) { }
 
@@ -18,6 +19,10 @@ export class SignInComponent implements OnInit {
   }
 
   onSubmit() {
+    if (this.form.invalid) {
+      return;
+    }
+
     console.log(this.form.value);
   }
 }
