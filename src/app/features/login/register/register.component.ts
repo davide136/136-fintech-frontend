@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, ValidationErrors, Validators } from '@angular/forms';
+import Validation from '../../../shared/validation';
 
 @Component({
   selector: 'ac-register',
@@ -11,11 +12,15 @@ export class RegisterComponent implements OnInit {
     name: ['', [Validators.required]],
     surname: ['', [Validators.required]],
     email: ['', [Validators.required]],
-    passwords: this.fb.group({
-      password: ['', [Validators.required, Validators.minLength(3)]],
-      password2: ['', [Validators.required, passwordValidator ]],
-    })
-  });
+    password: ['', [Validators.required, Validators.minLength(3)]],
+    password2: ['', [Validators.required ]],
+  },
+    {
+      validators: [Validation.match('password', 'password2')]
+    }
+  );
+  visibility = false;
+  submitted = false;
 
   constructor(private fb: FormBuilder) { }
 
@@ -23,16 +28,17 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.form.value);
- }
-}
+    this.submitted = true;
 
-function passwordValidator(control: AbstractControl): ValidationErrors | null {
-  console.log(control)
-  if (control && control.parent &&
-    control.parent.get('password')!.value != control.parent.get('password2')?.value)
-    return {
-      err: 'Le password inserite non corrispondono!'
+    if (this.form.invalid) {
+      return;
     }
-  return null;
+
+    console.log(this.form.value);
+  }
+
+  onReset(): void {
+    this.submitted = false;
+    this.form.reset();
+  }
 }

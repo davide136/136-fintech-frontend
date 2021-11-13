@@ -18,21 +18,22 @@
     <mat-error *ngIf="form.get('email')!.hasError('required')">Campo richiesto</mat-error>
   </mat-form-field>
 
-  <ng-container formGroupName="passwords">
-    <mat-form-field appearance="fill">
-      <mat-label>Password</mat-label>
-      <input matInput formControlName="password">
-      <mat-error *ngIf="form.get('passwords')!.get('password')!.hasError('required')">Campo richiesto</mat-error>
-      <mat-error *ngIf="form.get('passwords')!.get('password')!.hasError('minlength')">Minimo 3 caratteri</mat-error>
-    </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Password</mat-label>
+    <mat-icon matSuffix (click)='visibility=!visibility'>{{visibility? 'visibility_off' : 'visibility'}}</mat-icon>
+    <input [type]='visibility? "text":"password"' matInput formControlName="password">
+    <mat-error *ngIf="form.get('password')!.hasError('required')">Campo richiesto</mat-error>
+    <mat-error *ngIf="form.get('password')!.hasError('minlength')">Minimo 3 caratteri</mat-error>
+  </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Ripeti password</mat-label>
-      <input matInput formControlName="password2">
-      <mat-error *ngIf="form.get('passwords')!.get('password2')!.hasError('required')">Campo richiesto</mat-error>
-      <mat-error *ngIf="form.get('passwords')!.get('password2')!.hasError('err')">Le password non corrispondono</mat-error>
-    </mat-form-field>
-  </ng-container>
+  <mat-form-field appearance="fill">
+    <mat-label>Ripeti password</mat-label>
+    <mat-icon matSuffix (click)='visibility=!visibility'>{{visibility? 'visibility_off' : 'visibility'}}</mat-icon>
+    <input [type]='visibility? "text":"password"' matInput formControlName="password2">
+    <mat-error *ngIf="form.get('password2')!.hasError('required')">Campo richiesto</mat-error>
+    <mat-error *ngIf="form.hasError('matching')">Le password non corrispondono</mat-error>
+  </mat-form-field>
 
-  <button mat-raised-button color="primary" [disabled]="form.invalid">Invia</button>
+  <button [style.width]="'100%'" mat-raised-button color="primary" [disabled]="form.invalid">Registrati</button>
+  <a routerLink="../sign-in">Ho già un account</a>
 </form>
