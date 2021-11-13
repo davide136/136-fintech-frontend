@@ -5,11 +5,16 @@
       <div mat-line>
         <div >{{card.number}}</div>
         <span><b>€ {{card.amount}}</b></span> -
-        <span>{{card.type}}</span>
+        <span>{{card.type}}</span> -
+        <span>{{card.owner}}</span>
       </div>
-      <button mat-icon-button (click)="removeHandler()">
+      <button mat-icon-button (click)="removeCard(card._id)">
         <mat-icon >delete</mat-icon>
+      </button>
+      <button mat-icon-button (click)="editCard(card._id)">
+        <mat-icon>edit</mat-icon>
       </button>
     </mat-list-item>
   </mat-list>
 </ng-container>
+<button mat-raised-button color="primary" (click)="addCard()">Aggiungi</button>

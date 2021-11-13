@@ -12,7 +12,10 @@ export class RegisterComponent implements OnInit {
     name: ['', [Validators.required]],
     surname: ['', [Validators.required]],
     email: ['', [Validators.required]],
-    password: ['', [Validators.required, Validators.minLength(3)]],
+    password: ['', [
+      Validators.required,
+      Validators.minLength(3)]
+    ],
     password2: ['', [Validators.required ]],
   },
     {
