@@ -20,10 +20,7 @@ export class CardListComponent implements OnInit {
     const dialogRef = this.dialog.open(CardFormModalComponent);
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('result: ', result);
-      if (result) {
-        this.cards = [...this.cards, result];
-      }
+      this.insertUpdate(result);
     });
   }
 
@@ -36,11 +33,24 @@ export class CardListComponent implements OnInit {
       });
 
       dialogRef.afterClosed().subscribe(result => {
-        console.log('result: ', result);
-        if (result) {
-          this.cards = [...this.cards, result];
-        }
+        this.insertUpdate(result);
       });
     }   
+  }
+
+  insertUpdate(result: any) {
+    if (result) {
+      if (result._id) {
+        this.cards = this.cards.map(card => {
+          if (card._id == result._id) {
+            return result;
+          }
+          return card;
+        })
+      }
+      else {
+        this.cards = [...this.cards, result];
+      }
+    }
   }
 }
