@@ -50,7 +50,10 @@
 
   <button mat-raised-button
           color="primary"
-          [mat-dialog-close]="onSubmit()"
+          (click)="onSubmit()"
           [disabled]="!form.valid" >Conferma</button>
-  <button mat-raised-button color="secondary" [mat-dialog-close] type="button">Annulla</button>
+  <button mat-raised-button
+          color="secondary"
+          (click)="onCancel()"
+          type="button">Annulla</button>
 </form>

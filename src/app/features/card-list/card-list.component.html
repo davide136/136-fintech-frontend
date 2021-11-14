@@ -1,20 +1,31 @@
-<ng-container *ngIf="cards">
-  <mat-list>
-    <mat-list-item *ngFor='let card of cards'>
-      <mat-icon mat-list-icon>credit_card</mat-icon>
-      <div mat-line>
-        <div>{{card.number}}</div>
-        <span><b>€ {{card.amount}}</b></span> -
-        <span>{{card.type}}</span> -
-        <span>{{card.owner}}</span>
-      </div>
-      <button mat-icon-button (click)="removeCard(card._id)">
-        <mat-icon>delete</mat-icon>
-      </button>
-      <button mat-icon-button (click)="editCard(card._id)">
-        <mat-icon>edit</mat-icon>
-      </button>
-    </mat-list-item>
-  </mat-list>
-</ng-container>
-<button mat-raised-button color="primary" (click)="addCard()">Aggiungi</button>
+<mat-drawer-container autosize>
+  <mat-drawer #drawer mode="side" position="end">
+    <ac-card-form-modal [selectedCard]='selectedCard'
+                        (submitEvent)='submitHandler($event)'
+                        (cancelEvent)='cancelHandler()'></ac-card-form-modal>
+  </mat-drawer>
+
+
+  <ng-container *ngIf="cards">
+    <mat-list>
+      <mat-list-item *ngFor='let card of cards'>
+        <mat-icon mat-list-icon>credit_card</mat-icon>
+        <div mat-line>
+          <div>{{card.number}}</div>
+          <span><b>€ {{card.amount}}</b></span> -
+          <span>{{card.type}}</span> -
+          <span>{{card.owner}}</span>
+        </div>
+        <button mat-icon-button (click)="removeCard(card._id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+        <button mat-icon-button (click)="editCard(card._id)">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </mat-list-item>
+    </mat-list>
+  </ng-container>
+</mat-drawer-container>
+
+<button mat-raised-button color="primary" (click)="addCard()" *ngIf="!drawer.opened">Aggiungi</button>
+

@@ -1,18 +1,19 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { v4 as uuidv4 } from 'uuid';
-import { CardDto } from '../../../shared/models/cardDto.model';
+import { of } from 'rxjs';
+import { Card } from '../../../shared/models/card.model';
 
 @Component({
   selector: 'ac-card-form-modal',
   templateUrl: './card-form-modal.component.html',
   styleUrls: ['./card-form-modal.component.scss']
 })
-export class CardFormModalComponent implements OnInit{
-  console = console
+export class CardFormModalComponent implements OnChanges{
+  @Input() selectedCard: Card | null | undefined= null;
+  @Output() cancelEvent = new EventEmitter();
+  @Output() submitEvent = new EventEmitter<Card>();
   form = this.fb.group({
-    //hiddent properties
+    //hidden properties
     _id:[''],
     ownerId:[''],
     owner:[''],
@@ -34,47 +35,33 @@ export class CardFormModalComponent implements OnInit{
   });
   pattern = /[^0-9]/g;
 
+  constructor(private fb: FormBuilder) {
 
-  constructor(
-    private fb: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public dto: CardDto,
-  ) {
-    if (dto) {
-      this.form.setValue({
-        _id: dto._id,
-        ownerId: dto.ownerId,
-        owner: dto.owner,
-        name: dto.owner.split(' ')[0],
-        surname: dto.owner.split(' ')[1],
-        amount: dto.amount,
-        number: creditCardVisualizer(dto.number),
-        type: dto.type,
-        code: ''
-      })
-    }
-    else {
-
-      this.form.setValue({
-        _id: uuidv4(),
-        ownerId: uuidv4(),
-        owner: "",
-        name: "",
-        surname: "",
-        amount: 0,
-        number: "",
-        type: "visa",
-        code: ''
-      })
-    }
-    console.log(this.form.value)
   }
 
-  ngOnInit(): void {
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('received card',this.selectedCard);
+      this.selectedCard &&this.form.setValue({
+        _id: this.selectedCard._id,
+        ownerId: this.selectedCard.ownerId,
+        owner: this.selectedCard.owner,
+        name: this.selectedCard.owner.split(' ')[0],
+        surname: this.selectedCard.owner.split(' ')[1],
+        amount: this.selectedCard.amount,
+        number: creditCardVisualizer(this.selectedCard.number),
+        type: this.selectedCard.type,
+        code: ''
+      })
   }
 
   onSubmit() {
     this.form.get('owner')?.setValue(this.form.get('name')?.value + ' ' + this.form.get('surname')?.value);
-    return this.form.value;
+    this.submitEvent.emit(this.form.value);
+  }
+
+  onCancel() {
+    this.form.reset();
+    this.cancelEvent.emit();
   }
 
   transformNumber(value: string) {
