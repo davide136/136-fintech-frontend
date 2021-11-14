@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Card } from '../../shared/models/card.model';
+import { CardDto } from '../../shared/models/cardDto.model';
 import { CardFormModalComponent } from './card-form-modal/card-form-modal.component';
 
 @Component({
@@ -38,19 +39,21 @@ export class CardListComponent implements OnInit {
     }   
   }
 
-  insertUpdate(result: any) {
+  insertUpdate(result: CardDto) {
+    console.log('result', result)
     if (result) {
-      if (result._id) {
-        this.cards = this.cards.map(card => {
-          if (card._id == result._id) {
-            return result;
-          }
-          return card;
-        })
-      }
-      else {
-        this.cards = [...this.cards, result];
-      }
+      let isEditing = true;
+      this.cards = this.cards.map((card, idx, arr)  => {
+        if (card._id == result._id ) {
+          return result;
+        }
+        if (idx == arr.length - 1)
+          isEditing = false;
+        return card;
+      })
+      if (!isEditing)
+        this.cards = [...this.cards, result]; 
     }
   }
+  
 }

@@ -3,13 +3,13 @@
     <mat-list-item *ngFor='let card of cards'>
       <mat-icon mat-list-icon>credit_card</mat-icon>
       <div mat-line>
-        <div >{{card.number}}</div>
+        <div>{{card.number}}</div>
         <span><b>€ {{card.amount}}</b></span> -
         <span>{{card.type}}</span> -
         <span>{{card.owner}}</span>
       </div>
       <button mat-icon-button (click)="removeCard(card._id)">
-        <mat-icon >delete</mat-icon>
+        <mat-icon>delete</mat-icon>
       </button>
       <button mat-icon-button (click)="editCard(card._id)">
         <mat-icon>edit</mat-icon>

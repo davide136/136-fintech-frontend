@@ -1,8 +1,8 @@
-import { Component, Inject, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { v4 as uuidv4 } from 'uuid';
-import { Card } from '../../../shared/models/card.model';
+import { CardDto } from '../../../shared/models/cardDto.model';
 
 @Component({
   selector: 'ac-card-form-modal',
@@ -37,32 +37,44 @@ export class CardFormModalComponent implements OnInit{
 
   constructor(
     private fb: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public card: Card,
+    @Inject(MAT_DIALOG_DATA) public dto: CardDto,
   ) {
-    if (card) {
+    if (dto) {
       this.form.setValue({
-        _id: card._id,
-        ownerId: card.ownerId,
-        owner: card.owner,
-        name: card.owner.split(' ')[0],
-        surname: card.owner.split(' ')[1],
-        amount: card.amount,
-        number: creditCardVisualizer(card.number),
-        type: card.type,
+        _id: dto._id,
+        ownerId: dto.ownerId,
+        owner: dto.owner,
+        name: dto.owner.split(' ')[0],
+        surname: dto.owner.split(' ')[1],
+        amount: dto.amount,
+        number: creditCardVisualizer(dto.number),
+        type: dto.type,
         code: ''
       })
     }
+    else {
+
+      this.form.setValue({
+        _id: uuidv4(),
+        ownerId: uuidv4(),
+        owner: "",
+        name: "",
+        surname: "",
+        amount: 0,
+        number: "",
+        type: "visa",
+        code: ''
+      })
+    }
+    console.log(this.form.value)
   }
 
   ngOnInit(): void {
-  }  
+  }
 
   onSubmit() {
-    this.form.value._id = this.form.value._id ?? uuidv4();
-    this.form.value.ownerId = this.form.value.ownerId ?? uuidv4();
-    this.form.value.owner = this.form.value.owner ??
-      this.form.value.name + " " + this.form.value.surname;
-    this.form.value.amount = this.form.value.amount ?? 0;
+    this.form.get('owner')?.setValue(this.form.get('name')?.value + ' ' + this.form.get('surname')?.value);
+    return this.form.value;
   }
 
   transformNumber(value: string) {
