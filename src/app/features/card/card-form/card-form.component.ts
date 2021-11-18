@@ -1,17 +1,23 @@
-import { Component, EventEmitter, Inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
-import { of } from 'rxjs';
-import { Card } from '../../../shared/models/card.model';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Form, FormBuilder, NgForm, Validators } from '@angular/forms';
+import { Card } from '../../../shared/models/card';
+import { v4 as uuidv4 } from 'uuid';
+import { CardDto } from '../../../shared/models/cardDto';
 
 @Component({
-  selector: 'ac-card-form-modal',
-  templateUrl: './card-form-modal.component.html',
-  styleUrls: ['./card-form-modal.component.scss']
+  selector: 'ac-card-form',
+  templateUrl: './card-form.component.html',
+  styleUrls: ['./card-form.component.scss']
 })
-export class CardFormModalComponent implements OnChanges{
-  @Input() selectedCard: Card | null | undefined= null;
+export class CardFormComponent implements OnChanges{
+  @ViewChild('formRef', { static: true }) formRef!: NgForm;
+
+  @Input() selectedCard: Card | null | undefined = null;
+
   @Output() cancelEvent = new EventEmitter();
-  @Output() submitEvent = new EventEmitter<Card>();
+  @Output() submitEvent = new EventEmitter<CardDto>();
+
+  pattern = /[^0-9]/g;
   form = this.fb.group({
     //hidden properties
     _id:[''],
@@ -33,15 +39,14 @@ export class CardFormModalComponent implements OnChanges{
     ]],
     type: ['', [Validators.required]],
   });
-  pattern = /[^0-9]/g;
 
   constructor(private fb: FormBuilder) {
 
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('received card',this.selectedCard);
-      this.selectedCard &&this.form.setValue({
+    console.log('received card', this.selectedCard);
+    this.selectedCard && this.form.patchValue({
         _id: this.selectedCard._id,
         ownerId: this.selectedCard.ownerId,
         owner: this.selectedCard.owner,
@@ -55,13 +60,27 @@ export class CardFormModalComponent implements OnChanges{
   }
 
   onSubmit() {
-    this.form.get('owner')?.setValue(this.form.get('name')?.value + ' ' + this.form.get('surname')?.value);
+    if (!this.form.get('id')?.value)
+      this.form.patchValue({ id: uuidv4() });
+    if (!this.form.get('ownerId')?.value)
+      this.form.patchValue({ ownerId: uuidv4() });
+    if (!this.form.get('amount')?.value)
+      this.form.patchValue({ amount: 0 });
+    this.form.patchValue({
+      owner: this.form.get('name')?.value + ' ' + this.form.get('surname')?.value
+    });
     this.submitEvent.emit(this.form.value);
+    this.resetForm();
   }
 
   onCancel() {
-    this.form.reset();
+    this.resetForm();
     this.cancelEvent.emit();
+  }
+
+  resetForm() {
+    this.form.reset();
+    this.formRef.resetForm();
   }
 
   transformNumber(value: string) {

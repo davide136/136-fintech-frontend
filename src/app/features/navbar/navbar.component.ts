@@ -27,9 +27,9 @@ export class NavbarComponent implements OnInit {
         index: 2
       },
       {
-        label: 'Card List',
-        link: './card-list',
-        index: 0
+        label: 'Card',
+        link: './card',
+        index: 3
       },
     ];
   }
