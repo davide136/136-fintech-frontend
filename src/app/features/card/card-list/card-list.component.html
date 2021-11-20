@@ -8,6 +8,9 @@
         <span>{{card.type}}</span> -
         <span>{{card.owner}}</span>
       </div>
+      <button mat-icon-button (click)="movements(card._id)">
+        <mat-icon>assignment</mat-icon>
+      </button>
       <button mat-icon-button (click)="removeCard(card._id)">
         <mat-icon>delete</mat-icon>
       </button>

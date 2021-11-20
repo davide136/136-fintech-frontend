@@ -11,14 +11,19 @@ export class CardListComponent {
   @Input() cards: Card[] = [];
 
   @Output() editCardEvent = new EventEmitter<Card>();
+  @Output() movementsEvent = new EventEmitter<Card>();
 
   constructor() { }
 
   removeCard(_id: string) { this.cards = this.cards.filter(card => card._id != _id) }
 
   editCard(_id: string) {
-
     var selectedCard = this.cards.find(card => card._id == _id);
     this.editCardEvent.emit(selectedCard);
+  }
+
+  movements(_id: string) {
+    var selectedCard = this.cards.find(card => card._id == _id);
+    this.movementsEvent.emit(selectedCard);
   }
 }

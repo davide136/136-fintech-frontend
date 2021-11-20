@@ -1,0 +1,7 @@
+<div *ngFor='let movement of movements'>
+  <ac-movement [date]='dateTime(movement.timestamp)'
+               [amount]='movement.amount'
+               [type]='movement.type'
+               [title]='movement.title'
+               [descr]='movement.description'></ac-movement>
+</div>

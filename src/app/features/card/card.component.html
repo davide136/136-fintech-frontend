@@ -1,15 +1,20 @@
 <mat-drawer-container autosize>
   <mat-drawer #drawer mode="side"
               position="end">
-    <ac-card-form [selectedCard]='selectedCard'
+    <ac-card-form *ngIf='drawer_selector == "insertUpdateView"'
+                  [selectedCard]='selectedCard'
                   (submitEvent)='submitHandler($event)'
                   (cancelEvent)='cancelHandler()'>
     </ac-card-form>
+    <ac-movements *ngIf='drawer_selector == "movementsView"'>
+
+    </ac-movements>
   </mat-drawer>
 
-  <ac-card-list
+  <ac-card-list 
                 [cards]='cards'
-                (editCardEvent)='editHandler($event)'>
+                (editCardEvent)='editHandler($event)'
+                  (movementsEvent)='movementsHandler($event)'>
 
   </ac-card-list>
 
