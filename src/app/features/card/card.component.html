@@ -1,0 +1,23 @@
+<mat-drawer-container autosize>
+  <mat-drawer #drawer mode="side"
+              position="end">
+    <ac-card-form [selectedCard]='selectedCard'
+                  (submitEvent)='submitHandler($event)'
+                  (cancelEvent)='cancelHandler()'>
+    </ac-card-form>
+  </mat-drawer>
+
+  <ac-card-list
+                [cards]='cards'
+                (editCardEvent)='editHandler($event)'>
+
+  </ac-card-list>
+
+</mat-drawer-container>
+
+<button mat-raised-button
+        color="primary"
+        (click)="addCard()"
+        *ngIf="!drawer.opened">
+  Aggiungi
+</button>
