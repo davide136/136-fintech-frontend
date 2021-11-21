@@ -1,5 +1,12 @@
+<div style="text-align:end; padding-right: 1rem;">
+  <h1>
+    <b [style.color]="(balancePositive$ | async)">
+      {{balance$ | async | absoluteCurrency:'EUR'}}
+    </b>
+  </h1>
+</div>
 <div *ngFor='let movement of movements'>
-  <ac-movement [date]='dateTime(movement.timestamp)'
+  <ac-movement [date]='movement.timestamp'
                [amount]='movement.amount'
                [type]='movement.type'
                [title]='movement.title'

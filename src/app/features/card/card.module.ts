@@ -8,6 +8,7 @@ import { CardFormComponent } from './card-form/card-form.component';
 import { MaterialModule } from '../../shared/material/material.module';
 import { MovementsComponent } from './movements/movements.component';
 import { MovementComponent } from './movements/movement/movement.component';
+import { AbsoluteCurrencyPipe } from '../../shared/pipes/absolute-currency.pipe';
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import { MovementComponent } from './movements/movement/movement.component';
     CardFormComponent,
     MovementsComponent,
     MovementComponent,
+    AbsoluteCurrencyPipe
   ],
   imports: [
     CommonModule,

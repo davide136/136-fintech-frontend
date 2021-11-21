@@ -6,6 +6,7 @@ import { MaterialModule } from './shared/material/material.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { NavbarComponent } from './features/navbar/navbar.component';
 import { ContainerComponent } from './shared/layout/container/container.component';
+import { CurrencyPipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,6 @@ import { ContainerComponent } from './shared/layout/container/container.componen
     BrowserAnimationsModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

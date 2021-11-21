@@ -3,16 +3,23 @@
   <mat-expansion-panel (opened)="panelOpenState = true"
                        (closed)="panelOpenState = false">
     <mat-expansion-panel-header>
-      <mat-panel-title>
-        {{title}}
-      </mat-panel-title>
-      <mat-panel-description>
-        {{descr}}
-        {{type}}
-        {{amount}}
-        {{date}}
-      </mat-panel-description>
+      <span *ngIf='date != 0'
+            class="date">
+        [{{date | date : 'dd/MM/yyyy'}}]&nbsp;&nbsp;-&nbsp;&nbsp;
+      </span>
+      <span [style.color]='type=="in"?"green":"red"'>
+        {{amount}}&nbsp;&nbsp;-&nbsp;&nbsp;
+      </span>
+      <div>
+        <b>
+          {{title}}
+        </b>
+      </div>
     </mat-expansion-panel-header>
-    <p>I'm visible because I am open</p>
+    <mat-panel-description>
+      <span>
+        {{descr}}
+      </span>
+    </mat-panel-description>
   </mat-expansion-panel>
 </mat-accordion>

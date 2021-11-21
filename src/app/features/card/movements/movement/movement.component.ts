@@ -6,7 +6,7 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./movement.component.scss']
 })
 export class MovementComponent implements OnInit {
-  @Input() date: string = "";
+  @Input() date: number = 0;
   @Input() amount: number = 0;
   @Input() type: string = 'out';
   @Input() title: string = "";
@@ -18,5 +18,7 @@ export class MovementComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+  dateTime(timestamp: number): string { return ""; }
 
 }
