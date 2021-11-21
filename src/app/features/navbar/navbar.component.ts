@@ -31,6 +31,11 @@ export class NavbarComponent implements OnInit {
         link: './card',
         index: 3
       },
+      {
+        label: 'Transfer',
+        link: './transfer',
+        index: 4
+      },
     ];
   }
   ngOnInit(): void {

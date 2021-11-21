@@ -7,6 +7,7 @@ const routes: Routes = [
   { path: 'sign-in', loadChildren: () => import('./features/login/sign-in/sign-in.module').then(m => m.SignInModule) },
   { path: 'register', loadChildren: () => import('./features/login/register/register.module').then(m => m.RegisterModule) },
   { path: '', pathMatch: 'full', redirectTo: 'register' },
+  { path: 'transfer', loadChildren: () => import('./features/transfer/transfer.module').then(m => m.TransferModule) },
 ];
 
 @NgModule({

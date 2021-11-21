@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { from, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { Card } from '../../../shared/models/card';
@@ -11,16 +11,16 @@ import { Movement } from '../../../shared/models/movement';
   styleUrls: ['./movements.component.scss']
 })
 export class MovementsComponent {
-  @Input() card: Card | null = null;
+  @Input() selectedCard: Card | undefined | null = null;
 
   movements: Movement[] = [
     {
       _id: "asdauoshdoajidspoji12314omjc",
       type: 'in',
       amount: 10,
-      title: 'Vendita',
+      title: this.selectedCard?.owner ?? 'Vendita',
       description: 'Venduto iphone xs',
-      cardId: 'asdauoshdoajidspoji12314omjc',
+      cardId: this.selectedCard?._id ?? 'asdasd',
       timestamp: 155511651316423,
     },
     {
@@ -60,10 +60,7 @@ export class MovementsComponent {
 
   constructor() { }
 
-  ngOnChange() {
-
-  }
-
+  ngOnChange(changes: SimpleChanges) { console.log(changes) }
 
   ngOnDestroy() {
     this.sub.unsubscribe();

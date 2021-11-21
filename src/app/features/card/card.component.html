@@ -6,7 +6,8 @@
                   (submitEvent)='submitHandler($event)'
                   (cancelEvent)='cancelHandler()'>
     </ac-card-form>
-    <ac-movements *ngIf='drawer_selector == "movementsView"'>
+    <ac-movements *ngIf='selectedCard && drawer_selector == "movementsView"'
+                  [selectedCard]='selectedCard'>
 
     </ac-movements>
   </mat-drawer>

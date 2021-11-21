@@ -19,6 +19,5 @@ export class MovementComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  dateTime(timestamp: number): string { return ""; }
 
 }

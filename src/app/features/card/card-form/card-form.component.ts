@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { Form, FormBuilder, NgForm, Validators } from '@angular/forms';
+import { FormBuilder, NgForm, Validators } from '@angular/forms';
 import { Card } from '../../../shared/models/card';
 import { v4 as uuidv4 } from 'uuid';
 import { CardDto } from '../../../shared/models/cardDto';
+import { ResetForm } from '../../../shared/utils/reset-form';
 
 @Component({
   selector: 'ac-card-form',
@@ -78,8 +79,7 @@ export class CardFormComponent implements OnChanges{
   }
 
   resetForm() {
-    this.form.reset();
-    this.formRef.resetForm();
+    new ResetForm(this.form, this.formRef);
   }
 
   transformNumber(value: string) {
