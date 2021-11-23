@@ -4,6 +4,7 @@ import { Card } from '../../../shared/models/card';
 import { v4 as uuidv4 } from 'uuid';
 import { CardDto } from '../../../shared/models/cardDto';
 import { ResetForm } from '../../../shared/utils/reset-form';
+import { creditCardVisualizer } from '../../../shared/utils/creditCardVisualizer';
 
 @Component({
   selector: 'ac-card-form',
@@ -98,35 +99,3 @@ export class CardFormComponent implements OnChanges{
   }
 }
 
-function creditCardNormalizer(number: string): string {
-  return number.split(' ').join('');
-}
-
-function creditCardVisualizer(number: string): string {
-  number = creditCardNormalizer(number);
-  if (number.length < 5)
-    return number;
-
-  if (number.length < 9)
-    return number.substring(0, 4) + ' ' +
-      number.substring(4, number.length);
-
-  if (number.length < 13)
-    return number.substring(0, 4) + ' ' +
-      number.substring(4, 8) + ' ' +
-      number.substring(8, number.length);
-
-  if (number.length < 17)
-    return number.substring(0, 4) + ' ' +
-      number.substring(4, 8) + ' ' +
-      number.substring(8, 12) + ' ' +
-      number.substring(12, number.length);
-
-  // nubmer.length > 16
-  return number.substring(0, 4) + ' ' +
-    number.substring(4, 8) + ' ' +
-    number.substring(8, 12) + ' ' +
-    number.substring(12, 16);
-;
-
-}
