@@ -10,7 +10,11 @@
   <mat-form-field appearance="fill">
     <mat-icon matPrefix>vpn_key</mat-icon>
     <mat-label>Password</mat-label>
-    <mat-icon matSuffix (click)='visibility=!visibility'>{{visibility? 'visibility_off' : 'visibility'}}</mat-icon>
+    <button mat-icon-button matSuffix (click)='visibility=!visibility'>
+      <mat-icon matSuffix>
+        {{visibility? 'visibility_off' : 'visibility'}}
+      </mat-icon>
+    </button>
     <input [type]='visibility? "text":"password"' matInput formControlName="password">
     <mat-error *ngIf="form.get('password')!.hasError('required')">Campo richiesto</mat-error>
     <mat-error *ngIf="form.get('password')!.hasError('minlength')">Minimo 3 caratteri</mat-error>

@@ -6,8 +6,9 @@ const routes: Routes = [
   { path: 'card', loadChildren: () => import('./features/card/card.module').then(m => m.CardModule) },
   { path: 'sign-in', loadChildren: () => import('./features/login/sign-in/sign-in.module').then(m => m.SignInModule) },
   { path: 'register', loadChildren: () => import('./features/login/register/register.module').then(m => m.RegisterModule) },
-  { path: '', pathMatch: 'full', redirectTo: 'register' },
   { path: 'transfer', loadChildren: () => import('./features/transfer/transfer.module').then(m => m.TransferModule) },
+  { path: 'contacts', loadChildren: () => import('./features/contacts/contacts.module').then(m => m.ContactsModule) },
+  { path: '', pathMatch: 'full', redirectTo: 'register' },
 ];
 
 @NgModule({

@@ -24,16 +24,24 @@
   <mat-form-field appearance="fill">
     <mat-icon matPrefix>vpn_key</mat-icon>
     <mat-label>Password</mat-label>
-    <mat-icon matSuffix (click)='visibility=!visibility'>{{visibility? 'visibility_off' : 'visibility'}}</mat-icon>
+    <button mat-icon-button matSuffix (click)='visibility=!visibility'>
+      <mat-icon >
+      {{visibility? 'visibility_off' : 'visibility'}}
+      </mat-icon>
+    </button>
     <input [type]='visibility? "text":"password"' matInput formControlName="password">
     <mat-error *ngIf="form.get('password')!.hasError('required')">Campo richiesto</mat-error>
     <mat-error *ngIf="form.get('password')!.hasError('minlength')">Minimo 3 caratteri</mat-error>
-  </mat-form-field>
+</mat-form-field>
 
   <mat-form-field appearance="fill">
     <mat-icon matPrefix>vpn_key</mat-icon>
     <mat-label>Ripeti password</mat-label>
-    <mat-icon matSuffix (click)='visibility=!visibility'>{{visibility? 'visibility_off' : 'visibility'}}</mat-icon>
+    <button mat-icon-button matSuffix (click)='visibility=!visibility'>
+      <mat-icon matSuffix>
+        {{visibility? 'visibility_off' : 'visibility'}}
+      </mat-icon>
+    </button>
     <input [type]='visibility? "text":"password"' matInput formControlName="password2">
     <mat-error *ngIf="form.get('password2')!.hasError('required')">Campo richiesto</mat-error>
     <mat-error *ngIf="form.hasError('matching')">Le password non corrispondono</mat-error>

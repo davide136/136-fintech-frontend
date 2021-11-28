@@ -3,7 +3,7 @@ import { FormBuilder, NgForm, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmDialog } from '../../shared/layout/dialogs/confirm-dialog/confirm-dialog.component';
-import { ContactsModal } from '../../shared/layout/modals/contacts/contacts.component';
+import { ContactsComponent } from '../contacts/contacts.component';
 import { Card } from '../../shared/models/card';
 import { ResetForm } from '../../shared/utils/reset-form';
 
@@ -58,7 +58,7 @@ export class TransferComponent implements OnInit {
   }
 
   contacts() {
-    const dialogRef = this.dialog.open(ContactsModal);
+    const dialogRef = this.dialog.open(ContactsComponent);
     dialogRef.afterClosed().subscribe(result => {
       if (result)
         this.transfer()

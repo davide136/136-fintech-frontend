@@ -7,14 +7,12 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { NavbarComponent } from './features/navbar/navbar.component';
 import { ContainerComponent } from './shared/layout/container/container.component';
 import { ConfirmDialog } from './shared/layout/dialogs/confirm-dialog/confirm-dialog.component';
-import { ContactsModal } from './shared/layout/modals/contacts/contacts.component';
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     ContainerComponent,
     ConfirmDialog,
-    ContactsModal
   ],
   imports: [
     BrowserModule,

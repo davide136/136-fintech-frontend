@@ -1,0 +1,6 @@
+<ac-contact-list [contacts]='contacts'
+                 (done)='fillWithSelected($event)'
+                 (edit)='editHandler($event)'
+                 (delete)='deleteHandler($event)'                 
+                 ></ac-contact-list>
+<button mat-raised-button (click)="addContact()">Nuovo contatto</button>

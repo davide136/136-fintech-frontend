@@ -1,7 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatDrawer } from '@angular/material/sidenav';
 import { Card } from '../../shared/models/card';
-import { CardDto } from '../../shared/models/cardDto';
 
 @Component({
   selector: 'ac-card',
@@ -31,7 +30,7 @@ export class CardComponent {
     this.drawer.toggle();
   }
 
-  submitHandler(res: CardDto) {
+  submitHandler(res: any) {
     this.drawer.toggle();
     if (res)
       this.insertUpdate(res);
@@ -49,7 +48,7 @@ export class CardComponent {
     this.drawer.toggle(true);
   }
 
-  insertUpdate(result: CardDto) {
+  insertUpdate(result: any) {
     this.drawer_selector = "";
     if (result) {
       let isEdited = false;

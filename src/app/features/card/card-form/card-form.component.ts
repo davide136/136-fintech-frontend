@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewC
 import { FormBuilder, NgForm, Validators } from '@angular/forms';
 import { Card } from '../../../shared/models/card';
 import { v4 as uuidv4 } from 'uuid';
-import { CardDto } from '../../../shared/models/cardDto';
 import { ResetForm } from '../../../shared/utils/reset-form';
 import { creditCardVisualizer } from '../../../shared/utils/creditCardVisualizer';
 
@@ -17,7 +16,7 @@ export class CardFormComponent implements OnChanges{
   @Input() selectedCard: Card | null | undefined = null;
 
   @Output() cancelEvent = new EventEmitter();
-  @Output() submitEvent = new EventEmitter<CardDto>();
+  @Output() submitEvent = new EventEmitter<any>();
 
   pattern = /[^0-9]/g;
   form = this.fb.group({

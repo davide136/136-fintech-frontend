@@ -1,9 +1,7 @@
 
 <button mat-raised-button
-        class="contacts"
-        color="secondary"
-        (click)="contacts()">
-  Lista contatti
+        class="back">
+  Indietro
 </button>
 
 <form #formRef="ngForm" [formGroup]="form">
@@ -28,22 +26,6 @@
            formControlName="iban">
     <mat-error *ngIf="form.get('iban')!.hasError('required')">Campo richiesto</mat-error>
   </mat-form-field>
-  <mat-form-field appearance="fill">
-    <mat-label>Amount</mat-label>
-    <input type="number"
-           matInput
-           formControlName="amount">
-    <mat-error *ngIf="form.get('amount')!.hasError('required')">Campo richiesto</mat-error>
-  </mat-form-field>
-
-  <mat-form-field appearance="fill">
-    <mat-label>Seleziona una carta</mat-label>
-    <mat-select matInput
-                formControlName="card">
-      <mat-option *ngFor="let card of cards" [value]="card._id">{{card.number}}</mat-option>
-    </mat-select>
-    <mat-error *ngIf="form.get('card')!.hasError('required')">Campo richiesto</mat-error>
-  </mat-form-field>
 
 
   <button mat-raised-button
@@ -51,11 +33,5 @@
           (click)="onSubmit()"
           [disabled]="!form.valid">
     Conferma
-  </button>
-  <button mat-raised-button
-          color="secondary"
-          (click)="onCancel()"
-          type="button">
-    Annulla
   </button>
 </form>

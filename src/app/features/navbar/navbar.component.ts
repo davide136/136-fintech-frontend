@@ -32,8 +32,13 @@ export class NavbarComponent implements OnInit {
         index: 3
       },
       {
-        label: 'Transfer',
+        label: 'Trasferisci',
         link: './transfer',
+        index: 4
+      },
+      {
+        label: 'Contatti',
+        link: './contacts',
         index: 4
       },
     ];
