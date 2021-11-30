@@ -39,7 +39,12 @@ export class NavbarComponent implements OnInit {
       {
         label: 'Contatti',
         link: './contacts',
-        index: 4
+        index: 5
+      },
+      {
+        label: 'Appuntamenti',
+        link: './appointments',
+        index: 6
       },
     ];
   }

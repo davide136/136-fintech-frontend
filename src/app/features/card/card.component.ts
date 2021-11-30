@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatDrawer } from '@angular/material/sidenav';
 import { Card } from '../../shared/models/card';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'ac-card',
@@ -18,7 +19,7 @@ export class CardComponent {
 
 
 
-  constructor() { }
+  constructor(private _snackBar: MatSnackBar) { }
 
   addCard() {
     this.drawer_selector = "insertUpdateView";
@@ -34,6 +35,7 @@ export class CardComponent {
     this.drawer.toggle();
     if (res)
       this.insertUpdate(res);
+    this.selectedCard = null;
   }
 
   editHandler(card: Card) {
@@ -61,6 +63,7 @@ export class CardComponent {
           return card;
       })
       if (!isEdited) this.cards = [...this.cards, result];
+    this._snackBar.open('Lista carte aggiornata', 'Nascondi');
     }
   }
 }

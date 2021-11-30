@@ -1,7 +1,8 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, NgForm, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Contact } from '../../../shared/models/contact';
 import { ResetForm } from '../../../shared/utils/reset-form';
 
 @Component({
@@ -9,11 +10,17 @@ import { ResetForm } from '../../../shared/utils/reset-form';
   templateUrl: './contact-form.component.html',
   styleUrls: ['./contact-form.component.scss']
 })
-export class ContactFormComponent implements OnInit {
+export class ContactFormComponent implements OnChanges {
   @ViewChild('formRef', { static: true }) formRef!: NgForm;
-  @Output() submit = new EventEmitter();
+
+  @Output() submit = new EventEmitter<Contact>();
+  @Output() cancel = new EventEmitter();
+
+  @Input() selectedContact: Contact | null = null;
 
   form = this.fb.group({
+    //hidden ID
+    _id: [''],
     //form properties
     name: ['', [Validators.required]],
     surname: ['', [Validators.required]],
@@ -26,15 +33,21 @@ export class ContactFormComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    public dialog: MatDialog,
-    private _snackBar: MatSnackBar,
   ) { }
 
-  ngOnInit(): void {
+  ngOnChanges(): void {
+    if (this.selectedContact) {
+      this.form.patchValue({
+        _id: this.selectedContact._id,
+        name: this.selectedContact.name,
+        surname: this.selectedContact.surname,
+        iban: this.selectedContact.iban,
+      });
+    }
   }
 
   onCancel() {
-    new ResetForm(this.form, this.formRef);
+    this.cancel.emit();
   }
 
   onSubmit() {

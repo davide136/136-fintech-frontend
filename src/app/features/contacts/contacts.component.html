@@ -1,6 +1,14 @@
-<ac-contact-list [contacts]='contacts'
-                 (done)='fillWithSelected($event)'
-                 (edit)='editHandler($event)'
-                 (delete)='deleteHandler($event)'                 
-                 ></ac-contact-list>
-<button mat-raised-button (click)="addContact()">Nuovo contatto</button>
+<ng-container *ngIf="modalView == 'contact-list'">
+  <ac-contact-list [contacts]='contacts'
+                   (done)='fillWithSelected($event)'
+                   (edit)='editHandler($event)'
+                   (delete)='deleteHandler($event)'></ac-contact-list>
+  <button mat-raised-button (click)="addContact()">Nuovo contatto</button>
+</ng-container>
+<ng-container *ngIf="modalView == 'contact-form'">
+  <ac-contact-form
+                   [selectedContact]="selectedContact"
+                   (submit)="saveHandler($event)"
+                   (cancel)="cancelHandler()">
+  </ac-contact-form>
+</ng-container>

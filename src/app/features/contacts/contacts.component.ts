@@ -1,7 +1,7 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core';
 import { Contact } from '../../shared/models/contact';
-import { ContactFormComponent } from './contact-form/contact-form.component';
+import { v4 as uuidv4 } from 'uuid';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'ac-contacts',
@@ -9,33 +9,47 @@ import { ContactFormComponent } from './contact-form/contact-form.component';
   styleUrls: ['./contacts.component.scss']
 })
 export class ContactsComponent implements OnInit {
-  contacts: Contact[] = [{ iban: 'adshoiuh12352345', name: 'Mario', surname: 'Verdi', _id: Math.random() + '' }, { iban: 'adshoiuh12352345', name: 'Mario', surname: 'Rossi', _id: Math.random() + '' }, { iban: 'adshoiuh12352345', name: 'Mario', surname: 'Biondi', _id: Math.random() + '' },];
+  contacts: Contact[] = [{ iban: 'adshoiuh12352345', name: 'Mario', surname: 'Verdi', _id: uuidv4() }, { iban: 'adshoiuh12352345', name: 'Mario', surname: 'Rossi', _id: uuidv4() }, { iban: 'adshoiuh12352345', name: 'Mario', surname: 'Biondi', _id: uuidv4() },];
+  selectedContact: Contact | null = null;
+  modalView: 'contact-list' | 'contact-form' = 'contact-list';
 
-  constructor(
-    public dialog: MatDialog,
-  ) {}
+  constructor(private _snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
   }
 
-  addContact() {
-    const dialogRef = this.dialog.open(ContactFormComponent);
-    dialogRef.afterClosed().subscribe(result => {
-      if (result)
-        this.contacts = [...this.contacts, { ...result, _id: Math.random()+'' }]
-    });
+  saveHandler(contact: any) {
+    if (contact) {
+      if (contact._id)//EDITING
+        this.contacts = this.contacts.map(c => { return c._id === contact._id ? contact : c; });
+      else // ADDING
+        this.contacts = [...this.contacts, { ...contact, _id: uuidv4() }]
+    }
+    this._snackBar.open('Lista contatti aggiornata', 'Nascondi');
+    this.modalView = 'contact-list';
+    this.selectedContact = null;
   }
-
+ 
   fillWithSelected(_id: string) {
     
   }
 
-  editHandler(contact: Contact) {
+  addContact() {
+    this.selectedContact = null;
+    this.modalView = 'contact-form';
+  }
 
+  editHandler(contact: Contact) {
+    this.selectedContact = contact;
+    this.modalView = 'contact-form';
   }
 
   deleteHandler(_id: string) {
-
+    this.contacts = this.contacts.filter(c => c._id != _id);
   }
 
+  cancelHandler() {
+    this.modalView = 'contact-list';
+    this.selectedContact = null;
+  }
 }
