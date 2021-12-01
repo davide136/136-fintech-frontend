@@ -1,13 +1,16 @@
-<mat-drawer-container autosize>
-  <mat-drawer #drawer mode="side">
-    <p>Auto-resizing sidenav</p>
-    <p>Lorem, ipsum dolor sit amet consectetur.</p>
-    
+<mat-drawer-container hasBackdrop="true">
+  <mat-drawer #drawer mode="side"
+              position="end"
+              >
+    <ac-appointements-form (closeDrawer)="drawer.toggle(false)"
+                           [location]="selectedLocation">
+    </ac-appointements-form>
+
   </mat-drawer>
 
   <mat-selection-list [multiple]="false">
     <mat-list-option *ngFor='let location of locations'
-                     (click)="newAppointment(location._id)">
+                     (click)="newAppointment(location)">
       <mat-icon mat-list-icon>location_city</mat-icon>
       <div mat-line><b>{{location.name}}</b></div>
       <div mat-line>{{location.address}}</div>
