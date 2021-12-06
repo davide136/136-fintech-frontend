@@ -4,9 +4,9 @@ import { CommonModule } from '@angular/common';
 import { ContactsRoutingModule } from './contacts-routing.module';
 import { ContactsComponent } from './contacts.component';
 import { ContactListComponent } from './contact-list/contact-list.component';
-import { MaterialModule } from '../../shared/material/material.module';
+import { MaterialModule } from '../../../shared/material/material.module';
 import { FormsModule } from '@angular/forms';
-import { ContactsFilterPipe } from '../../shared/pipes/filter-contacts.pipe';
+import { ContactsFilterPipe } from '../../../shared/pipes/filter-contacts.pipe';
 import { ContactFormComponent } from './contact-form/contact-form.component';
 
 @NgModule({

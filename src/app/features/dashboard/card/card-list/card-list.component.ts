@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Card } from '../../../shared/models/card';
+import { Card } from '../../../../shared/models/card';
 
 @Component({
   selector: 'ac-card-list',

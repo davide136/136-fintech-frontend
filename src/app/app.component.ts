@@ -20,43 +20,43 @@ export class AppComponent {
   @ViewChild('drawer', { static: true }) drawer!: MatDrawer;
   navLinks: Link[]  = [
     {
-      label: 'Home',
-      icon: 'home',
-      link: './home',
+      label: 'Dashboard',
+      icon: 'dashboard',
+      link: './dashboard',
       index: 0
     }, {
       label: 'Accedi',
       icon: 'person',
-      link: './sign-in',
+      link: './login/sign-in',
       index: 1
     }, {
       label: 'Registrati',
       icon: 'person_add',
-      link: './register',
+      link: './login/register',
       index: 2
     },
     {
       label: 'Card',
       icon: 'credit_card',
-      link: './card',
+      link: './dashboard/card',
       index: 3
     },
     {
       label: 'Trasferisci',
       icon: 'compare_arrows',
-      link: './transfer',
+      link: './dashboard/transfer',
       index: 4
     },
     {
       label: 'Contatti',
       icon: 'contacts',
-      link: './contacts',
+      link: './dashboard/contacts',
       index: 5
     },
     {
       label: 'Appuntamenti',
       icon: 'calendar_today',
-      link: './appointments',
+      link: './dashboard/appointments',
       index: 6
     },
   ];

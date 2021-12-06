@@ -1,8 +1,8 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
 import { from, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { Card } from '../../../shared/models/card';
-import { Movement } from '../../../shared/models/movement';
+import { Card } from '../../../../shared/models/card';
+import { Movement } from '../../../../shared/models/movement';
 
 
 @Component({

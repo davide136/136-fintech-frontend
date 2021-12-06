@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormBuilder, NgForm, Validators } from '@angular/forms';
-import { Card } from '../../../shared/models/card';
+import { Card } from '../../../../shared/models/card';
 import { v4 as uuidv4 } from 'uuid';
-import { ResetForm } from '../../../shared/utils/reset-form';
-import { creditCardVisualizer } from '../../../shared/utils/creditCardVisualizer';
+import { ResetForm } from '../../../../shared/utils/reset-form';
+import { creditCardVisualizer } from '../../../../shared/utils/creditCardVisualizer';
 
 @Component({
   selector: 'ac-card-form',

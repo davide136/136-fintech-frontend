@@ -1,12 +1,12 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { FormBuilder, NgForm, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { ConfirmDialog } from '../../../shared/layout/dialogs/confirm-dialog/confirm-dialog.component';
-import { DayWithSlots } from '../../../shared/models/days-with-slots';
-import { DayWithSlot } from '../../../shared/models/days-with-slot';
-import { dateToString } from '../../../shared/utils/dateToString';
-import { ResetForm } from '../../../shared/utils/reset-form';
-import { Location } from '../../../shared/models/location';
+import { ConfirmDialog } from '../../../../shared/layout/dialogs/confirm-dialog/confirm-dialog.component';
+import { DayWithSlots } from '../../../../shared/models/days-with-slots';
+import { DayWithSlot } from '../../../../shared/models/days-with-slot';
+import { dateToString } from '../../../../shared/utils/dateToString';
+import { ResetForm } from '../../../../shared/utils/reset-form';
+import { Location } from '../../../../shared/models/location';
 
 @Component({
   selector: 'ac-appointements-form',

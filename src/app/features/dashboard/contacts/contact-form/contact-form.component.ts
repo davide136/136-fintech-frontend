@@ -2,8 +2,8 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } 
 import { FormBuilder, NgForm, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Contact } from '../../../shared/models/contact';
-import { ResetForm } from '../../../shared/utils/reset-form';
+import { Contact } from '../../../../shared/models/contact';
+import { ResetForm } from '../../../../shared/utils/reset-form';
 
 @Component({
   selector: 'ac-contact-form',

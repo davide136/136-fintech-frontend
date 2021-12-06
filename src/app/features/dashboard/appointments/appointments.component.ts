@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Location } from '../../shared/models/location';
+import { Location } from '../../../shared/models/location';
 import { v4 as uuidv4 } from 'uuid';
 import { MatDrawer } from '@angular/material/sidenav';
 

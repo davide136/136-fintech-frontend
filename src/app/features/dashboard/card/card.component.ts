@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatDrawer } from '@angular/material/sidenav';
-import { Card } from '../../shared/models/card';
+import { Card } from '../../../shared/models/card';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({

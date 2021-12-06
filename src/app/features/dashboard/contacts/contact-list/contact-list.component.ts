@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core'
-import { Contact } from '../../../shared/models/contact';
+import { Contact } from '../../../../shared/models/contact';
 
 @Component({
   selector: 'ac-contact-list',
