@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -7,50 +7,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
-  title = 'app';
-  navLinks: any[];
-  activeLinkIndex = -1;
+  @Input() navLinks: any[] = [];
+  @Input() activeLinkIndex = -1;
 
-  constructor(private router: Router) {
-    this.navLinks = [
-      {
-        label: 'Home',
-        link: './home',
-        index: 0
-      }, {
-        label: 'Accedi',
-        link: './sign-in',
-        index: 1
-      }, {
-        label: 'Registrati',
-        link: './register',
-        index: 2
-      },
-      {
-        label: 'Card',
-        link: './card',
-        index: 3
-      },
-      {
-        label: 'Trasferisci',
-        link: './transfer',
-        index: 4
-      },
-      {
-        label: 'Contatti',
-        link: './contacts',
-        index: 5
-      },
-      {
-        label: 'Appuntamenti',
-        link: './appointments',
-        index: 6
-      },
-    ];
-  }
-  ngOnInit(): void {
-    this.router.events.subscribe(() => {
-      this.activeLinkIndex = this.navLinks.indexOf(this.navLinks.find(tab => tab.link === '.' + this.router.url));
-    });
-  }
+  constructor() {}
+  ngOnInit(): void {}
 }

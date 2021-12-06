@@ -8,8 +8,8 @@ const routes: Routes = [
   { path: 'register', loadChildren: () => import('./features/login/register/register.module').then(m => m.RegisterModule) },
   { path: 'transfer', loadChildren: () => import('./features/transfer/transfer.module').then(m => m.TransferModule) },
   { path: 'contacts', loadChildren: () => import('./features/contacts/contacts.module').then(m => m.ContactsModule) },
-  { path: '', pathMatch: 'full', redirectTo: 'register' },
   { path: 'appointments', loadChildren: () => import('./features/appointments/appointments.module').then(m => m.AppointmentsModule) },
+  { path: '', pathMatch: 'full', redirectTo: 'register' },
 ];
 
 @NgModule({

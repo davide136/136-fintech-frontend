@@ -1,0 +1,20 @@
+<mat-drawer-container autosize>
+  <mat-drawer #drawer mode="side" opened>
+    <ac-navbar [navLinks]="navLinks"
+               [activeLinkIndex]="activeLinkIndex"></ac-navbar>
+  </mat-drawer>
+
+  <mat-toolbar>
+    <button mat-icon-button
+            *ngIf="getScreenWidth < MIN_WIDTH_FOR_SHOWING_MENU"
+            (click)="drawer.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span *ngIf="navLinks[activeLinkIndex]">{{navLinks[activeLinkIndex].label}}</span>
+  </mat-toolbar>
+
+  <ac-container>
+    <router-outlet>
+    </router-outlet>
+  </ac-container>
+</mat-drawer-container>
