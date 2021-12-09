@@ -10,6 +10,63 @@ export type Link = {
 }
 
 export const MIN_WIDTH_FOR_SHOWING_MENU = 900;
+var loginMenu: Link[] = [
+  {
+    label: 'Accedi',
+    icon: 'person',
+    link: './login/sign-in',
+    index: 0
+  }, {
+    label: 'Registrati',
+    icon: 'person_add',
+    link: './login/register',
+    index: 1
+  }
+];
+var appMenu: Link[] = [
+  {
+    label: 'Dashboard',
+    icon: 'home',
+    link: './dashboard',
+    index: 0
+  },
+  {
+    label: 'Carte',
+    icon: 'credit_card',
+    link: './dashboard/card',
+    index: 1
+  },
+  {
+    label: 'Movimenti',
+    icon: 'receipt_long',
+    link: './dashboard/movements',
+    index: 1
+  },
+  {
+    label: 'Trasferisci',
+    icon: 'paid',
+    link: './dashboard/transfer',
+    index: 2
+  },
+  {
+    label: 'Appuntamenti',
+    icon: 'event',
+    link: './dashboard/appointments',
+    index: 3
+  },
+  {
+    label: 'Tasse',
+    icon: 'summarize',
+    link: './dashboard/contacts',
+    index: 4
+  },
+  {
+    label: 'Logout',
+    icon: 'contacts',
+    link: './dashboard/logout',
+    index: 5
+  },
+];
 
 @Component({
   selector: 'ac-root',
@@ -18,48 +75,7 @@ export const MIN_WIDTH_FOR_SHOWING_MENU = 900;
 })
 export class AppComponent {
   @ViewChild('drawer', { static: true }) drawer!: MatDrawer;
-  navLinks: Link[]  = [
-    {
-      label: 'Dashboard',
-      icon: 'dashboard',
-      link: './dashboard',
-      index: 0
-    }, {
-      label: 'Accedi',
-      icon: 'person',
-      link: './login/sign-in',
-      index: 1
-    }, {
-      label: 'Registrati',
-      icon: 'person_add',
-      link: './login/register',
-      index: 2
-    },
-    {
-      label: 'Card',
-      icon: 'credit_card',
-      link: './dashboard/card',
-      index: 3
-    },
-    {
-      label: 'Trasferisci',
-      icon: 'compare_arrows',
-      link: './dashboard/transfer',
-      index: 4
-    },
-    {
-      label: 'Contatti',
-      icon: 'contacts',
-      link: './dashboard/contacts',
-      index: 5
-    },
-    {
-      label: 'Appuntamenti',
-      icon: 'calendar_today',
-      link: './dashboard/appointments',
-      index: 6
-    },
-  ];
+  navLinks: Link[]  = loginMenu;
   activeLinkIndex = -1;
   getScreenWidth: number = 0;
   MIN_WIDTH_FOR_SHOWING_MENU = MIN_WIDTH_FOR_SHOWING_MENU;

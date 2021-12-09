@@ -1,3 +1,11 @@
 .mat-drawer{
   min-width: 17rem;
+  height: 100%;
+}
+.mat-drawer-container{
+    position: revert;
+}
+.mat-drawer-inner-container {
+  margin-top: 50px;
+  margin-bottom: auto;
 }
