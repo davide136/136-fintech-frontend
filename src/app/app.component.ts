@@ -12,15 +12,21 @@ export type Link = {
 export const MIN_WIDTH_FOR_SHOWING_MENU = 900;
 var loginMenu: Link[] = [
   {
+    label: 'Dashboard',
+    icon: 'home',
+    link: './dashboard',
+    index: 0
+  },
+  {
     label: 'Accedi',
     icon: 'person',
     link: './login/sign-in',
-    index: 0
+    index: 1
   }, {
     label: 'Registrati',
     icon: 'person_add',
     link: './login/register',
-    index: 1
+    index: 2
   }
 ];
 var appMenu: Link[] = [
