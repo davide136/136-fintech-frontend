@@ -7,6 +7,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { NavbarComponent } from './features/navbar/navbar.component';
 import { ContainerComponent } from './shared/layout/container/container.component';
 import { ConfirmDialog } from './shared/layout/dialogs/confirm-dialog/confirm-dialog.component';
+import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
@@ -16,6 +17,7 @@ import { ConfirmDialog } from './shared/layout/dialogs/confirm-dialog/confirm-di
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     MaterialModule,
     BrowserAnimationsModule

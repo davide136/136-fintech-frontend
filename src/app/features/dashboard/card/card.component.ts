@@ -2,6 +2,9 @@ import { Component, ViewChild } from '@angular/core';
 import { MatDrawer } from '@angular/material/sidenav';
 import { Card } from '../../../shared/models/card';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CardsService } from '../../../api/cards.service';
+import { v4 as uuidv4 } from 'uuid';
+import { mergeMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'ac-card',
@@ -9,17 +12,32 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./card.component.scss']
 })
 export class CardComponent {
-  // Sidemenu
   @ViewChild('drawer') drawer!: MatDrawer;
 
-  //data to be replaced by server call
-  cards: Card[] = [{ "_id": "dd157a93-e632-490a-8a88-531dd61933f4", "number": "0000 0000 0000 0000", "ownerId": "et45er5e6fba", "owner": "Mario Rossi", "type": "visa", "amount": 15000 }, { "_id": "418a2814-c6da-4e5f-8c9a-bfe0b69649a6", "number": "1111 1111 1111 1111", "ownerId": "et45er5e6fba", "owner": "Mario Rossi", "type": "mastercard", "amount": 500 }, { "_id": "970a55ff-70ba-4c22-b3aa-f4fd8d51ccfb", "number": "2222 2222 2222 2222", "ownerId": "et45er5e6fba", "owner": "Mario Rossi", "type": "visa", "amount": 250000 }];
+  cards: Card[] = [];
+  cards$ = this.cardsService.getAll().pipe(
+    tap(res => console.log(res)),
+    mergeMap(res =>
+      this.cards = res
+    )
+  );
   drawer_selector: string = "";
   selectedCard: Card | null | undefined = null;
 
 
 
-  constructor(private _snackBar: MatSnackBar) { }
+  constructor(
+    private _snackBar: MatSnackBar,
+    private cardsService: CardsService,
+  ) { }
+
+  ngOnInit() {
+    this.cards$.subscribe();
+  }
+
+  ngOnChanges() {
+    this.cards$.subscribe();
+  }
 
   addCard() {
     this.drawer_selector = "insertUpdateView";
@@ -32,10 +50,8 @@ export class CardComponent {
   }
 
   submitHandler(res: any) {
-    this.drawer.toggle();
     if (res)
       this.insertUpdate(res);
-    this.selectedCard = null;
   }
 
   editHandler(card: Card) {
@@ -50,20 +66,46 @@ export class CardComponent {
     this.drawer.toggle(true);
   }
 
-  insertUpdate(result: any) {
+  insertUpdate(dto: any) {
     this.drawer_selector = "";
-    if (result) {
-      let isEdited = false;
-      this.cards = this.cards.map((card, idx, arr) => {
-        if (card._id == result._id) {
-          isEdited = true;
-          return result;
+    if (dto._id) {
+      this.cardsService.update(dto).subscribe(
+        res => {
+          if (res) {
+            this.cards = this.cards.map((card, idx, arr) => {
+              if (card._id == res._id) {
+                return res;
+              }
+              else
+                return card;
+            });
+            this._snackBar.open('Lista carte aggiornata', 'Nascondi');
+          }
+          else
+            this._snackBar.open('Si è verificato un errore', 'Nascondi');
+          this.end();
         }
-        else
-          return card;
-      })
-      if (!isEdited) this.cards = [...this.cards, result];
-    this._snackBar.open('Lista carte aggiornata', 'Nascondi');
+      )
     }
+    else {
+      this.cardsService.add(dto).subscribe(
+        res => {
+          if (res) {
+            res._id = uuidv4();
+            this.cards = [...this.cards, res];
+            this._snackBar.open('Lista carte aggiornata', 'Nascondi');
+          }
+          else
+            this._snackBar.open('Si è verificato un errore', 'Nascondi');
+          this.end();
+        }
+      )
+
+    }    
+  }
+
+  end() {
+    this.selectedCard = null;
+    this.drawer.toggle();
   }
 }

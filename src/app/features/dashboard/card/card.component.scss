@@ -1,18 +1,20 @@
 .mat-raised-button {
   margin-top: 1rem;
   width: 100%;
+  bottom: 1rem;
 }
 
 .mat-drawer-container {
-  min-height: 21rem;
+  min-height: 40rem;
   background-color: #424242;
 }
 
 .mat-drawer-side.mat-drawer-end {
+  height: 100%;
   border-left: 0px;
   border-right: none;
 }
 
 .mat-drawer-content {
-  min-height: 21rem;
+  height: 100%;
 }

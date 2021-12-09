@@ -81,7 +81,7 @@ var appMenu: Link[] = [
 })
 export class AppComponent {
   @ViewChild('drawer', { static: true }) drawer!: MatDrawer;
-  navLinks: Link[]  = loginMenu;
+  navLinks: Link[] = appMenu;
   activeLinkIndex = -1;
   getScreenWidth: number = 0;
   MIN_WIDTH_FOR_SHOWING_MENU = MIN_WIDTH_FOR_SHOWING_MENU;

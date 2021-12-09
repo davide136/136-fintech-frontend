@@ -12,18 +12,16 @@
     </ac-movements>
   </mat-drawer>
 
-  <ac-card-list 
-                [cards]='cards'
+  <ac-card-list [cards]='cards'
                 (editCardEvent)='editHandler($event)'
-                  (movementsEvent)='movementsHandler($event)'>
+                (movementsEvent)='movementsHandler($event)'>
 
   </ac-card-list>
-
+  
+  <button mat-raised-button
+          color="primary"
+          (click)="addCard()"
+          *ngIf="!drawer.opened">
+    Aggiungi
+  </button>
 </mat-drawer-container>
-
-<button mat-raised-button
-        color="primary"
-        (click)="addCard()"
-        *ngIf="!drawer.opened">
-  Aggiungi
-</button>

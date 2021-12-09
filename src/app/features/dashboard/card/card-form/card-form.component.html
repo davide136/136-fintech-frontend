@@ -26,16 +26,16 @@
   </mat-form-field>
 
   <mat-form-field class="half-width-left" appearance="fill">
-    <mat-label>CVV</mat-label>
+    <mat-label>CSC</mat-label>
     <input matInput
            maxlength="3"       
-           formControlName="code"  
-           (keyup)="transformCode(code.value)"
-           (blur)="transformCode(code.value)"
-           #code>
-    <mat-error *ngIf="form.get('code')!.hasError('required')">Campo richiesto</mat-error>
-    <mat-error *ngIf="form.get('code')!.hasError('minlength')">Sono stati inseriti meno di 3 caratteri.</mat-error>
-    <mat-error *ngIf="form.get('code')!.hasError('maxlength')">Sono stati inseriti più di 3 caratteri.</mat-error>
+           formControlName="csc"  
+           (keyup)="transformCode(csc.value)"
+           (blur)="transformCode(csc.value)"
+           #csc>
+    <mat-error *ngIf="form.get('csc')!.hasError('required')">Campo richiesto</mat-error>
+    <mat-error *ngIf="form.get('csc')!.hasError('minlength')">Sono stati inseriti meno di 3 caratteri.</mat-error>
+    <mat-error *ngIf="form.get('csc')!.hasError('maxlength')">Sono stati inseriti più di 3 caratteri.</mat-error>
   </mat-form-field>
 
   <mat-form-field class="half-width-right" appearance="fill">
