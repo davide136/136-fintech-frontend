@@ -21,3 +21,6 @@
 .mat-drawer {
   min-width: 26rem;
 }
+::ng-deep .mat-drawer-backdrop.mat-drawer-shown {
+  background-color: rgb(66 66 66 / 79%) !important;
+}

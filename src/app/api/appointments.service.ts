@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import { DayWithSlot } from "../shared/models/days-with-slot";
 import { DayWithSlots } from "../shared/models/days-with-slots";
 import { environment } from "../../environments/environment";
+import { Location } from "../shared/models/location";
 
 
 @Injectable({

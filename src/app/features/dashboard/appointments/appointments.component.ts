@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Location } from '../../../shared/models/location';
 import { v4 as uuidv4 } from 'uuid';
 import { MatDrawer } from '@angular/material/sidenav';
+import { AppointmentsService } from '../../../api/appointments.service';
 
 @Component({
   selector: 'ac-appointments',
@@ -10,17 +11,27 @@ import { MatDrawer } from '@angular/material/sidenav';
 })
 export class AppointmentsComponent implements OnInit {
   @ViewChild('drawer', { static: true }) drawer!: MatDrawer;
-  locations: Location[] = [{ address: 'Via Padova 15', coords: [45.40797, 11.88586], name: 'Sede centrale', _id: uuidv4(), email: 'info@fintech.com', phone: '+39 049 950 0000' }, { address: 'Via Padova 15/B', coords: [45.49597, 11.81346], name: 'Sede operativa', _id: uuidv4(), email: 'info@fintech.it', phone: '+39 049 538 0000' }];
+  locations: Location[] = [];
   selectedLocation: Location | null = null;
 
-  constructor() { }
+  constructor(
+    private appointmentsService: AppointmentsService
+  ) { }
 
   ngOnInit(): void {
+    this.appointmentsService
+      .getLocations()
+      .subscribe(res => this.locations = res);
   }
 
   newAppointment(loc: Location) {
     this.selectedLocation = null;
     this.selectedLocation = loc;
     this.drawer.toggle(true);
+  }
+
+  openedChangeEvent(open: boolean) {
+    if (!open)
+      this.selectedLocation = null;
   }
 }

@@ -1,6 +1,7 @@
 <mat-drawer-container hasBackdrop="true">
   <mat-drawer #drawer mode="side"
               position="end"
+              (openedChange)="openedChangeEvent($event)"
               >
     <ac-appointements-form (closeDrawer)="drawer.toggle(false)"
                            [location]="selectedLocation">
