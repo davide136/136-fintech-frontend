@@ -1,10 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatDrawer } from '@angular/material/sidenav';
-import { Card, CardDto, Movement } from '../../../shared/models/card';
+import { Card, CardDto } from '../../../shared/models/card';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CardsService } from '../../../api/cards.service';
-import { mergeMap, tap, map } from 'rxjs/operators';
-import { of, Subscription } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'ac-card',
@@ -16,16 +16,12 @@ export class CardComponent {
 
   cards: Card[] = [];
   cards$ = this.cardsService.getAll().pipe(
-    tap(res => console.log(res)),
     mergeMap(res =>
       this.cards = res
     )
   )
   cardsSub: Subscription | null = null;
-  drawer_selector: string = "";
   selectedCard: Card | null | undefined = null;
-  movements: Movement[] = [];
-  movements$ = new Subscription();
 
   constructor(
     private _snackBar: MatSnackBar,
@@ -45,8 +41,7 @@ export class CardComponent {
   }
 
   addCard() {
-    this.drawer_selector = "insertUpdateView";
-    this.drawer.toggle();
+    this.drawer.toggle(true);
   }
 
   cancelHandler() {
@@ -69,15 +64,6 @@ export class CardComponent {
 
   movementsHandler(card: Card) {
     this.selectedCard = card;
-    this.movements$ = this.cardsService.movements(
-      this.selectedCard._id,
-      15,
-      0
-    ).subscribe(dto => {
-      this.movements = [ ...dto.data ];
-      this.drawer.toggle(true);
-      this.drawer_selector = "movementsView";
-    });
   }
 
   insert(dto: CardDto) {
@@ -97,6 +83,5 @@ export class CardComponent {
   end() {
     this.selectedCard = null;
     this.drawer.toggle(false);
-    this.drawer_selector = "";
   }
 }

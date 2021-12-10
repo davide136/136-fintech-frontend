@@ -6,6 +6,10 @@ import { ConfirmDialog } from '../../../shared/layout/dialogs/confirm-dialog/con
 import { ContactsComponent } from '../contacts/contacts.component';
 import { Card } from '../../../shared/models/card';
 import { ResetForm } from '../../../shared/utils/reset-form';
+import { Contact } from '../../../shared/models/contact';
+import { CardsService } from '../../../api/cards.service';
+import { CurrencyPipe } from '@angular/common';
+import { TransferService } from '../../../api/transfer.service';
 
 @Component({
   selector: 'ac-transfer',
@@ -15,7 +19,7 @@ import { ResetForm } from '../../../shared/utils/reset-form';
 export class TransferComponent implements OnInit {
   @ViewChild('formRef', { static: true }) formRef!: NgForm;
 
-  cards: Card[] = [{ "_id": "dd157a93-e632-490a-8a88-531dd61933f4", "number": "0000 0000 0000 0000", "ownerId": "et45er5e6fba", "owner": "Mario Rossi", "type": "visa", "amount": 15000 }, { "_id": "418a2814-c6da-4e5f-8c9a-bfe0b69649a6", "number": "1111 1111 1111 1111", "ownerId": "et45er5e6fba", "owner": "Mario Rossi", "type": "mastercard", "amount": 500 }, { "_id": "970a55ff-70ba-4c22-b3aa-f4fd8d51ccfb", "number": "2222 2222 2222 2222", "ownerId": "et45er5e6fba", "owner": "Mario Rossi", "type": "visa", "amount": 250000 }];
+  cards: Card[] = [];
   form = this.fb.group({
     //form properties
     name: ['', [Validators.required]],
@@ -29,16 +33,22 @@ export class TransferComponent implements OnInit {
       Validators.required,
       Validators.minLength(1),
     ]],
-    card: ['', [Validators.required]],
+    cardId: ['', [Validators.required]],
   });
 
   constructor(
     private fb: FormBuilder,
     public dialog: MatDialog,
+    private currencyPipe: CurrencyPipe,
+    private cardsService: CardsService,
+    private transferService: TransferService,
     private _snackBar: MatSnackBar,
   ) { }
 
   ngOnInit(): void {
+    this.cardsService.getAll().subscribe(
+      res => this.cards = res
+    );
   }
 
   onCancel() {
@@ -50,7 +60,15 @@ export class TransferComponent implements OnInit {
   }
 
   confirm() {
-    const dialogRef = this.dialog.open(ConfirmDialog);
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      data: {
+        title: 'Confermare l\'operazione',
+        message: 'Hai richiesto un trasferimento di '
+          + this.currencyPipe.transform(this.form.get('amount')!.value, 'EUR')
+          + ' verso ' + this.form.get('name')!.value + ' '
+          + this.form.get('surname')!.value + '.',
+      }
+    });
     dialogRef.afterClosed().subscribe(result => {
       if (result)
         this.transfer()
@@ -59,15 +77,30 @@ export class TransferComponent implements OnInit {
 
   contacts() {
     const dialogRef = this.dialog.open(ContactsComponent);
-    dialogRef.afterClosed().subscribe(result => {
-      if (result)
-        this.transfer()
+    dialogRef.afterClosed().subscribe(contact => {
+      if (contact)
+        this.fillWithSelectedContact(contact as Contact)
+    });
+  }
+
+  fillWithSelectedContact(contact: Contact) {
+    this.form.patchValue({
+      ...contact
     });
   }
 
   transfer() {
-    console.log('transferring', this.form.value)
-    new ResetForm(this.form, this.formRef);
-    this._snackBar.open('Trasferiti dei soldi.', 'Chiudi');
+    console.log('transferring log', this.form.value);
+    this.transferService.transfer(this.form.value)
+      .subscribe(res => {
+        if (res) {
+          new ResetForm(this.form, this.formRef);
+          this._snackBar.open('Il trasferimento è stato eseguito con successo.', 'Chiudi');
+        }
+        else {
+          this._snackBar.open('Il trasferimento è fallito.', 'Chiudi');
+        }
+      }
+    );
   }
 }

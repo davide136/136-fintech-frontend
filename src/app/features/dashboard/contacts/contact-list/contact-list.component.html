@@ -1,14 +1,14 @@
-<ng-container *ngIf='contacts && contacts.length != 0; else noContactsMessage'>
+<ng-container *ngIf='contacts.length != 0; else noContactsMessage'>
   <mat-form-field class="full-width" appearance="fill">
     <mat-label>Filtro</mat-label>
     <input matInput [(ngModel)]="filter">
   </mat-form-field>
   <mat-list>
-    <mat-list-item *ngFor='let contact of (contacts | contactsFilter:filter); else noContactsMessage' class='full-width'>
+    <mat-list-item *ngFor='let contact of (contacts | contactsFilter:filter)' class='full-width'>
       <mat-icon mat-list-icon>account_circle</mat-icon>
       <div mat-line>{{contact.name}} {{contact.surname}}</div>
       <div mat-line>{{contact.iban}}</div>
-      <button mat-icon-button (click)='doneEmit(contact._id)'><mat-icon>done</mat-icon></button>
+      <button mat-icon-button (click)='doneEmit(contact)'><mat-icon>done</mat-icon></button>
       <button mat-icon-button (click)='editEmit(contact)'><mat-icon>edit</mat-icon></button>
       <button mat-icon-button (click)='deleteEmit(contact._id)'><mat-icon>delete</mat-icon></button>
     </mat-list-item>

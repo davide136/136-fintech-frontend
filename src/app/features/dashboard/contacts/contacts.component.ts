@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { Contact } from '../../../shared/models/contact';
-import { v4 as uuidv4 } from 'uuid';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ContactsService } from '../../../api/contacts.service';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'ac-contacts',
@@ -9,29 +10,47 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./contacts.component.scss']
 })
 export class ContactsComponent implements OnInit {
-  contacts: Contact[] = [{ iban: 'adshoiuh12352345', name: 'Mario', surname: 'Verdi', _id: uuidv4() }, { iban: 'adshoiuh12352345', name: 'Mario', surname: 'Rossi', _id: uuidv4() }, { iban: 'adshoiuh12352345', name: 'Mario', surname: 'Biondi', _id: uuidv4() },];
+
+  contacts: Contact[] = [];
   selectedContact: Contact | null = null;
   modalView: 'contact-list' | 'contact-form' = 'contact-list';
 
-  constructor(private _snackBar: MatSnackBar) {}
+  constructor(
+    private _snackBar: MatSnackBar,
+    public matDialogRef: MatDialogRef<ContactsComponent>,
+    private contactsService: ContactsService
+  ) { }
 
   ngOnInit(): void {
+    this.contactsService.getAll().subscribe(
+      dto => this.contacts = dto
+    );
   }
 
-  saveHandler(contact: any) {
-    if (contact) {
-      if (contact._id)//EDITING
-        this.contacts = this.contacts.map(c => { return c._id === contact._id ? contact : c; });
-      else // ADDING
-        this.contacts = [...this.contacts, { ...contact, _id: uuidv4() }]
+  saveHandler(dto: Partial<Contact>) {
+    console.log(dto)
+    if (dto && dto._id != '') { // EDITING
+      this.contactsService.update(dto)!.subscribe(res => {
+        console.log(res)
+        this.contacts = this.contacts.map(c => {
+          return c._id === res._id ? res : c;
+        });
+        this._snackBar.open('Lista contatti aggiornata', 'Nascondi');
+        this.end();
+      })
     }
-    this._snackBar.open('Lista contatti aggiornata', 'Nascondi');
-    this.modalView = 'contact-list';
-    this.selectedContact = null;
+    else { // ADDING
+      this.contactsService.add(dto)?.subscribe(res => {
+        console.log(res)
+        this.contacts = [...this.contacts, res];
+        this._snackBar.open('Lista contatti aggiornata', 'Nascondi');
+        this.end();
+      })
+    }
   }
  
-  fillWithSelected(_id: string) {
-    
+  fillWithSelected(contact: Contact) {
+    this.matDialogRef.close(contact);
   }
 
   addContact() {
@@ -45,10 +64,21 @@ export class ContactsComponent implements OnInit {
   }
 
   deleteHandler(_id: string) {
-    this.contacts = this.contacts.filter(c => c._id != _id);
+    this.contactsService.delete(_id).subscribe(
+      res => {
+        if(res)
+          this.contacts = this.contacts.filter(
+            c => c._id != _id
+          );
+      }
+    )
   }
 
   cancelHandler() {
+    this.end();
+  }
+
+  end() {
     this.modalView = 'contact-list';
     this.selectedContact = null;
   }

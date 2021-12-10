@@ -3,12 +3,12 @@ import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
 import { environment } from "../../environments/environment";
 import { Contact } from "../shared/models/contact";
-
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TransferService {
+export class ContactsService {
 
   constructor(private http: HttpClient) { }
 
@@ -17,18 +17,22 @@ export class TransferService {
   }
 
   add(dto: Partial<Contact>): Observable<Contact> | null {
-    if (dto._id || !(dto.iban && dto.name && dto.surname))
+    if (!(dto.iban && dto.name && dto.surname))
       return null;
-    return this.http.post<Contact>(environment.apiUrl +'/contacts', dto);
+    
+    return this.http.post<Contact>(environment.apiUrl + '/contacts', {
+      ...dto,
+      _id: uuidv4()
+    });
   }
 
   update(dto: Partial<Contact>): Observable<Contact> | null {
-    if (!(dto._id && dto.iban && dto.name && dto.surname))
+    if (!(dto.iban && dto.name && dto.surname && dto._id))
       return null;
-    return this.http.put<Contact>(environment.apiUrl +'/contacts/:contactId', dto);
+    return this.http.put<Contact>(environment.apiUrl +'/contacts/' + dto._id, dto);
   }
 
-  delete(): Observable<boolean> {
-    return this.http.delete<boolean>(environment.apiUrl +'/contacts/:contactId');
+  delete(_id: string): Observable<boolean> {
+    return this.http.delete<boolean>(environment.apiUrl + '/contacts/' + _id);
   }
 }

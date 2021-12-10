@@ -9,7 +9,7 @@ import { Contact } from '../../../../shared/models/contact';
 export class ContactListComponent implements OnInit, OnDestroy {
   @Input() contacts: Contact[] = [];
 
-  @Output() done = new EventEmitter<string>();
+  @Output() done = new EventEmitter<Contact>();
   @Output() edit = new EventEmitter<Contact>();
   @Output() delete = new EventEmitter<string>();
 
@@ -23,8 +23,8 @@ export class ContactListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
   }
 
-  doneEmit(_id: string) {
-    this.done.emit(_id);
+  doneEmit(selectedContact: Contact) {
+    this.done.emit(selectedContact);
   }
   editEmit(contact: Contact) {
     this.edit.emit(contact);
