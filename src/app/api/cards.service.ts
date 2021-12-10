@@ -1,22 +1,9 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { Card } from "../shared/models/card";
-import { Movement } from "../shared/models/movement";
+import { Card, CardDto, MovementDto } from "../shared/models/card";
+import { v4 as uuidv4 } from 'uuid';
 import { environment } from "../../environments/environment";
-
-export type CardDto = {
-  _id: string,
-  type: 'visa' | 'mastercard',
-  name: string,
-  surname: string,
-  number: string,
-  csc: number
-};
-type MovementDto = {
-  data: Movement[],
-  total: number
-}
 
 @Injectable({
   providedIn: 'root'
@@ -29,20 +16,19 @@ export class CardsService {
     return this.http.get<Card[]>(environment.apiUrl +'/cards');
   }
 
-  add(dto: CardDto): Observable<Card> {
-    return this.http.post<Card>(environment.apiUrl +'/cards', dto);
+  add(dto: CardDto): Observable<Card> {    
+    return this.http.post<Card>(environment.apiUrl + '/cards', {
+      ...dto,
+      _id: uuidv4(),
+    });
   }
 
-  update(dto: Card): Observable<Card> {
-    return this.http.put<Card>(environment.apiUrl +'/cards', dto);
+  delete(_id: string): Observable<boolean> {
+    return this.http.delete<boolean>(environment.apiUrl +'/cards/' + _id);
   }
 
-  delete(): Observable<boolean> {
-    return this.http.delete<boolean>(environment.apiUrl +'/cards/:cardId');
-  }
-
-  movements(limit: number, offset: number): Observable<MovementDto> {
-    return this.http.get<MovementDto>(environment.apiUrl +'/cards/:cardId/movements', {
+  movements(_id: string, limit: number, offset: number): Observable<MovementDto> {
+    return this.http.get<MovementDto>(environment.apiUrl +'/cards/' + _id + '/movements', {
       params: {
         limit,
         offset,

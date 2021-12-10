@@ -1,8 +1,8 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { EventEmitter, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { from, of } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
-import { Card } from '../../../../shared/models/card';
-import { Movement } from '../../../../shared/models/movement';
+import { map, reduce, tap } from 'rxjs/operators';
+import { Movement } from '../../../../shared/models/card';
 
 
 @Component({
@@ -11,58 +11,28 @@ import { Movement } from '../../../../shared/models/movement';
   styleUrls: ['./movements.component.scss']
 })
 export class MovementsComponent {
-  @Input() selectedCard: Card | undefined | null = null;
+  @Input() movements: Movement[] = [];
+  @Output() closeEvent = new EventEmitter<void>();
 
-  movements: Movement[] = [
-    {
-      _id: "asdauoshdoajidspoji12314omjc",
-      type: 'in',
-      amount: 10,
-      title: this.selectedCard?.owner ?? 'Vendita',
-      description: 'Venduto iphone xs',
-      cardId: this.selectedCard?._id ?? 'asdasd',
-      timestamp: 155511651316423,
-    },
-    {
-      _id: "asdauoshdoajidspasfffqoji12314omjc",
-      type: 'out',
-      amount: 10,
-      title: 'Acquisto',
-      description: 'iPhone 11',
-      cardId: 'asdauoshdoajidspoji12314omjc',
-      timestamp: 415543453451,
-    },
-    {
-      _id: "asdauoshdodsagsagthetajidspoji12314omjc",
-      type: 'in',
-      amount: 0,
-      title: 'Bolletta',
-      description: 'Bolletta corrente',
-      cardId: 'asdauoshdoajidspoji12314omjc',
-      timestamp: 11232135,
-    },];
   balance: number = 0;
-
-  sub = from(this.movements).pipe(
-    tap(m => {
-      if (m.type == 'in') this.balance = this.balance + m.amount;
-      else this.balance = this.balance - m.amount;
-    })
-  ).subscribe();
-  balance$ = of(this.balance).pipe();
-  balancePositive$ = of(this.balance).pipe(
-    map(b => {
-      if (b == 0) return "white";
-      else if (b > 0) return "green";
-      return "red";
-    })
-  )
+  balanceColor: string = 'white';
 
   constructor() { }
 
-  ngOnChange(changes: SimpleChanges) { console.log(changes) }
+  ngOnInit() {
+    console.log('movements',this.movements)
+    this.movements.forEach(m => {
+      const sign = m.type == 'in' ? 1 : -1;
+      this.balance = this.balance + (sign * m.amount);
+    });
+    console.log('balance',this.balance)
+    if (this.balance == 0) this.balanceColor = "white";
+    else if (this.balance > 0) this.balanceColor = "chartreuse";
+    else this.balanceColor = "red";
+    console.log('balanceColor',this.balanceColor)
+  }
 
-  ngOnDestroy() {
-    this.sub.unsubscribe();
+  close() {
+    this.closeEvent.emit();
   }
 }

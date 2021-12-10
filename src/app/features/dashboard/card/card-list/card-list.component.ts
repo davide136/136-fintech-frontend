@@ -9,17 +9,13 @@ import { Card } from '../../../../shared/models/card';
 export class CardListComponent {
 
   @Input() cards: Card[] = [];
-
-  @Output() editCardEvent = new EventEmitter<Card>();
   @Output() movementsEvent = new EventEmitter<Card>();
+  @Output() deleteEvent = new EventEmitter<string>();
 
   constructor() { }
 
-  removeCard(_id: string) { this.cards = this.cards.filter(card => card._id != _id) }
-
-  editCard(_id: string) {
-    var selectedCard = this.cards.find(card => card._id == _id);
-    this.editCardEvent.emit(selectedCard);
+  removeCard(_id: string) {
+    this.deleteEvent.emit(_id);
   }
 
   movements(_id: string) {

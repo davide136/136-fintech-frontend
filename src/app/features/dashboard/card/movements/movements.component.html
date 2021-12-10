@@ -1,14 +1,14 @@
 <div style="text-align:end; padding-right: 1rem;">
   <h1>
-    <b [style.color]="(balancePositive$ | async)">
-      {{balance$ | async | absoluteCurrency:'EUR'}}
+    <b [style.color]="balanceColor">
+      {{balance | absoluteCurrency:'EUR'}}
     </b>
   </h1>
 </div>
-<div *ngFor='let movement of movements'>
-  <ac-movement [date]='movement.timestamp'
+  <ac-movement *ngFor='let movement of movements'
+               [date]='movement.timestamp'
                [amount]='movement.amount'
                [type]='movement.type'
                [title]='movement.title'
                [descr]='movement.description'></ac-movement>
-</div>
+<button mat-raised-button (click)="close()">Chiudi</button>

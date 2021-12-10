@@ -1,9 +1,8 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormBuilder, NgForm, Validators } from '@angular/forms';
-import { Card } from '../../../../shared/models/card';
+import { Card, CardDto } from '../../../../shared/models/card';
 import { ResetForm } from '../../../../shared/utils/reset-form';
 import { creditCardVisualizer } from '../../../../shared/utils/creditCardVisualizer';
-import { CardDto } from '../../../../api/cards.service';
 
 @Component({
   selector: 'ac-card-form',

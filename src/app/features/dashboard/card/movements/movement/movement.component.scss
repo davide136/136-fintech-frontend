@@ -1,11 +1,11 @@
 .mat-expansion-panel-header {
   display: flex;
   min-width: 300px;
-  align-items: center;
 }
 .date {
   font-size: 0.7rem;
 }
-.mat-expansion-panel-body {
-  align-items: center;
+.mat-expansion-panel {
+  background-color: #4c4c4c;
+  margin: 8px;
 }

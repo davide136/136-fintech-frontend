@@ -7,21 +7,20 @@
                   (cancelEvent)='cancelHandler()'>
     </ac-card-form>
     <ac-movements *ngIf='selectedCard && drawer_selector == "movementsView"'
-                  [selectedCard]='selectedCard'>
-
+                  [movements]='movements'
+                  (closeEvent)='cancelHandler()'>
     </ac-movements>
   </mat-drawer>
 
   <ac-card-list [cards]='cards'
-                (editCardEvent)='editHandler($event)'
-                (movementsEvent)='movementsHandler($event)'>
+                (movementsEvent)='movementsHandler($event)'
+                (deleteEvent)='deleteHandler($event)'>
 
   </ac-card-list>
   
   <button mat-raised-button
           color="primary"
-          (click)="addCard()"
-          *ngIf="!drawer.opened">
+          (click)="addCard()">
     Aggiungi
   </button>
 </mat-drawer-container>
