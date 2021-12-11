@@ -3,15 +3,15 @@
               position="end"
               (openedChange)="openedChangeEvent($event)"
               >
-    <ac-appointments-form  [location]="selectedLocation"
-                           [selectedLocationSlots]="selectedLocationSlots"
+    <ac-appointments-form  [location]="selectedLocation$ | async"
+                           [selectedLocationSlots]="selectedLocationSlots$ | async"
                             (submit)="submitHandle($event)">
     </ac-appointments-form>
 
   </mat-drawer>
 
   <mat-selection-list [multiple]="false">
-    <mat-list-option *ngFor='let location of locations'
+    <mat-list-option *ngFor='let location of locations$ | async'
                      (click)="newAppointment(location)">
       <mat-icon mat-list-icon>location_city</mat-icon>
       <div mat-line><b>{{location.name}}</b></div>

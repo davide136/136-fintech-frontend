@@ -3,6 +3,7 @@ import { Contact } from '../../../shared/models/contact';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ContactsService } from '../../../api/contacts.service';
 import { MatDialogRef } from '@angular/material/dialog';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'ac-contacts',
@@ -11,8 +12,8 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class ContactsComponent implements OnInit {
 
-  contacts: Contact[] = [];
-  selectedContact: Contact | null = null;
+  contacts$ = new BehaviorSubject<Contact[]>([]);
+  selectedContact$ = new BehaviorSubject<Contact | null>(null);
   modalView: 'contact-list' | 'contact-form' = 'contact-list';
 
   constructor(
@@ -23,18 +24,20 @@ export class ContactsComponent implements OnInit {
 
   ngOnInit(): void {
     this.contactsService.getAll().subscribe(
-      dto => this.contacts = dto
+      dto => this.contacts$.next(dto)
     );
   }
 
   saveHandler(dto: Partial<Contact>) {
-    console.log(dto)
     if (dto && dto._id != '') { // EDITING
       this.contactsService.update(dto)!.subscribe(res => {
         console.log(res)
-        this.contacts = this.contacts.map(c => {
-          return c._id === res._id ? res : c;
-        });
+        this.contacts$.next(
+          this.contacts$.value.map(c => {
+            return c._id === res._id ? res : c;
+          })
+        )
+        
         this._snackBar.open('Lista contatti aggiornata', 'Nascondi');
         this.end();
       })
@@ -42,7 +45,7 @@ export class ContactsComponent implements OnInit {
     else { // ADDING
       this.contactsService.add(dto)?.subscribe(res => {
         console.log(res)
-        this.contacts = [...this.contacts, res];
+        this.contacts$.next([...this.contacts$.value, res])
         this._snackBar.open('Lista contatti aggiornata', 'Nascondi');
         this.end();
       })
@@ -54,12 +57,12 @@ export class ContactsComponent implements OnInit {
   }
 
   addContact() {
-    this.selectedContact = null;
+    this.selectedContact$.next(null);
     this.modalView = 'contact-form';
   }
 
   editHandler(contact: Contact) {
-    this.selectedContact = contact;
+    this.selectedContact$.next(contact);
     this.modalView = 'contact-form';
   }
 
@@ -67,9 +70,11 @@ export class ContactsComponent implements OnInit {
     this.contactsService.delete(_id).subscribe(
       res => {
         if(res)
-          this.contacts = this.contacts.filter(
-            c => c._id != _id
-          );
+          this.contacts$.next(
+            this.contacts$.value.filter(
+              c => c._id != _id
+            )
+          )
       }
     )
   }
@@ -80,6 +85,6 @@ export class ContactsComponent implements OnInit {
 
   end() {
     this.modalView = 'contact-list';
-    this.selectedContact = null;
+    this.selectedContact$.next(null);
   }
 }

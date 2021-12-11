@@ -1,8 +1,8 @@
 <mat-form-field style="width:100%">
-  <mat-select [(value)]="selectedCard"
-              (selectionChange)="loadMovements()">
-    <mat-option *ngFor="let card of cards"
-                [value]="card">
+  <mat-select [(value)]='selectedCardId'
+              (selectionChange)="loadMovements($event)">
+    <mat-option *ngFor="let card of cards$ | async"
+                [value]="card._id">
       {{card.number}}
     </mat-option>
   </mat-select>
@@ -10,12 +10,12 @@
 
 <div style="text-align:end; padding-right: 1rem;">
   <h1>
-    <b [style.color]="balanceColor">
-      {{balance | absoluteCurrency:'EUR'}}
+    <b [style.color]='balanceColor$ | async'>
+      {{balance$ | async | absoluteCurrency:'EUR'}}
     </b>
   </h1>
 </div>
-  <ac-movement *ngFor='let movement of movements'
+  <ac-movement *ngFor='let movement of movements$ | async'
                [date]='movement.timestamp'
                [amount]='movement.amount'
                [type]='movement.type'

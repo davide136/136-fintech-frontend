@@ -8,8 +8,8 @@ import { Card } from '../../../../shared/models/card';
 })
 export class CardListComponent {
 
-  @Input() cards: Card[] = [];
-  @Output() movementsEvent = new EventEmitter<Card>();
+  @Input() cards: Card[] | null = [];
+  @Output() movementsEvent = new EventEmitter<string>();
   @Output() deleteEvent = new EventEmitter<string>();
 
   constructor() { }
@@ -19,7 +19,6 @@ export class CardListComponent {
   }
 
   movements(_id: string) {
-    var selectedCard = this.cards.find(card => card._id == _id);
-    this.movementsEvent.emit(selectedCard);
+    this.movementsEvent.emit(_id);
   }
 }

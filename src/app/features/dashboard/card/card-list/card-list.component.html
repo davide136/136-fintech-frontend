@@ -9,9 +9,7 @@
         <span>{{card.owner}}</span>
       </div>
       <button mat-icon-button
-              (click)="movements(card._id)"              
-              [routerLink]="'../movements'"
-              [queryParams]="{id: card._id}">
+              (click)="movements(card._id)">
         <mat-icon>assignment</mat-icon>
       </button>
       <button mat-icon-button (click)="removeCard(card._id)">

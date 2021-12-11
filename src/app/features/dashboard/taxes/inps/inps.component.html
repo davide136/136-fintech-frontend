@@ -1,0 +1,49 @@
+<form #formRef="ngForm" [formGroup]="form">
+
+  <mat-form-field appearance="fill" style="width: 14.28%">
+    <mat-label>Codice Sede</mat-label>
+    <input matInput formControlName="cod_sede">
+    <mat-error *ngIf="form.get('cod_sede')!.hasError('required')">Campo richiesto</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" style="width: 14.28%">
+    <mat-label>Causale contributo</mat-label>
+    <input matInput formControlName="tax_subject">
+    <mat-error *ngIf="form.get('tax_subject')!.hasError('required')!">Campo richiesto</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" style="width: 14.28%">
+    <mat-label>Codice INPS</mat-label>
+    <input matInput formControlName="inps_code">
+    <mat-error *ngIf="form.get('inps_code')!.hasError('required')!">Campo richiesto</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" style="width: 14.28%">
+    <mat-label>Da</mat-label>
+    <input matInput formControlName="from">
+    <mat-error *ngIf="form.get('from')!.hasError('required')">Campo richiesto</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" style="width: 14.28%">
+    <mat-label>A</mat-label>
+    <input matInput formControlName="to">
+    <mat-error *ngIf="form.get('to')!.hasError('required')">Campo richiesto</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" style="width: 14.28%">
+    <mat-label>Debito</mat-label>
+    <input matInput formControlName="debit">
+    <mat-error *ngIf="form.get('debit')!.hasError('required')">Campo richiesto</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" style="width:14.28%">
+    <mat-label>Credito</mat-label>
+    <input matInput formControlName="credit">
+    <mat-error *ngIf="form.get('credit')!.hasError('required')">Campo richiesto</mat-error>
+  </mat-form-field>
+
+</form>
+
+<button mat-mini-fab color="warn">
+  <mat-icon>delete</mat-icon>
+</button>

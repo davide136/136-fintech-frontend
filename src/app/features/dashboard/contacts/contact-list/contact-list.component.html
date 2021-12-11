@@ -1,4 +1,4 @@
-<ng-container *ngIf='contacts.length != 0; else noContactsMessage'>
+<ng-container *ngIf='contacts && contacts.length != 0; else noContactsMessage'>
   <mat-form-field class="full-width" appearance="fill">
     <mat-label>Filtro</mat-label>
     <input matInput [(ngModel)]="filter">

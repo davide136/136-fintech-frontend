@@ -14,6 +14,7 @@ import { amountValidator } from '../../../shared/validators/amount.validator';
 import { TransferValidator } from '../../../shared/validators/transfer.validator';
 import { IBANValidator } from '../../../shared/validators/iban.validator';
 import { CardIdValidator } from '../../../shared/validators/card-id.validator';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'ac-transfer',
@@ -23,7 +24,7 @@ import { CardIdValidator } from '../../../shared/validators/card-id.validator';
 export class TransferComponent implements OnInit {
   @ViewChild('formRef', { static: true }) formRef!: NgForm;
 
-  cards: Card[] = [];
+  cards$ = new BehaviorSubject<Card[]>([]);
   form = this.fb.group({
     //form properties
     name: ['', [Validators.required]],
@@ -59,7 +60,7 @@ export class TransferComponent implements OnInit {
 
   ngOnInit(): void {
     this.cardsService.getAll().subscribe(
-      res => this.cards = res
+      res => this.cards$.next(res)
     );
   }
 

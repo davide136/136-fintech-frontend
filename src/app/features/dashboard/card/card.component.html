@@ -2,13 +2,13 @@
   <mat-drawer #drawer mode="side"
               position="end">
     <ac-card-form
-                  [selectedCard]='selectedCard'
+                  [selectedCard]='selectedCard$ | async'
                   (submitEvent)='submitHandler($event)'
                   (cancelEvent)='cancelHandler()'>
     </ac-card-form>
   </mat-drawer>
 
-  <ac-card-list [cards]='cards'
+  <ac-card-list [cards]='cards$ | async'
                 (movementsEvent)='movementsHandler($event)'
                 (deleteEvent)='deleteHandler($event)'>
 

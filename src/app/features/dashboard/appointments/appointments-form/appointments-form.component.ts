@@ -16,8 +16,8 @@ import { DatePipe } from '@angular/common';
 export class AppointmentsFormComponent {
   @ViewChild('formRef', { static: true }) formRef!: NgForm;
 
-  @Input() location: Location | null = null;
-  @Input() selectedLocationSlots: DayWithSlots[] = [];
+  @Input() location: Location | null | undefined = null;
+  @Input() selectedLocationSlots: DayWithSlots[] | null = [];
 
   @Output() submit = new EventEmitter<DayWithSlot | null>();
 
@@ -35,7 +35,7 @@ export class AppointmentsFormComponent {
   ) { }
 
   ngOnChanges() {
-    this.selectedLocationSlots.forEach(slot => {
+    this.selectedLocationSlots!.forEach(slot => {
       this.availableDays.push(slot.day)
     })
   }
@@ -57,7 +57,7 @@ export class AppointmentsFormComponent {
 
   onDateSelected(dateInput: any) {
     var slots: Hour[] = [];
-    this.selectedLocationSlots
+    this.selectedLocationSlots!
       .forEach(slot => {
         var formattedInput = this.datepipe.transform(
           new Date(dateInput.value), 'M/d/yyyy');

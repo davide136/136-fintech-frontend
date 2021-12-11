@@ -1,8 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { BehaviorSubject, combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { CardsService } from '../../../api/cards.service';
 import { Card, Movement } from '../../../shared/models/card';
 
+//TODO:   shouldLoadMore
 
 @Component({
   selector: 'ac-movements',
@@ -10,12 +13,18 @@ import { Card, Movement } from '../../../shared/models/card';
   styleUrls: ['./movements.component.scss']
 })
 export class MovementsComponent {
-  @Input() selectedCard: Card | null = null;
+  cards$ = new BehaviorSubject<Card[]>([]);
+  movements$ = new BehaviorSubject<Movement[]>([]);
+  selectedCardId$ = new BehaviorSubject<string>('');
+  selectedCardId: string = '';
+  balance$ = new BehaviorSubject<number>(0);
+  balanceColor$ = new BehaviorSubject<string>('white');
+  selectedCard$ = combineLatest([this.cards$, this.selectedCardId$]).pipe(
+    map(([cards, id]) => {
+      return cards.find(card => card._id === id)
+    })
+  );
 
-  cards: Card[] = [];
-  movements: Movement[] = [];
-  balance: number = 0;
-  balanceColor: string = 'white';
 
   constructor(
     private cardsService: CardsService,
@@ -26,53 +35,50 @@ export class MovementsComponent {
     this.loadAll();    
   }
 
-  ngOnChanges() {
-    this.loadAll();
-  }
-
   loadAll() {
     this.cardsService.getAll().subscribe(res => {
-      this.cards = res;
+      this.cards$.next(res);
       if (res.length > 0) {
-        this.activatedRoute.queryParams
+        this.activatedRoute.params
           .subscribe(query => {
-            if (query.id == undefined)
-              this.selectedCard = this.cards[0];
+            if (query['id'] == undefined)
+              this.selectedCardId$.next(this.cards$.value.length > 0 ?
+                this.cards$.value[0]._id : '');
             else {
-              this.cards.forEach(c => {
-                if (c._id == query.id)
-                  this.selectedCard = c;
-              });
+              this.selectedCardId$.next(query['id'])
             }
-            this.loadMovements();
+            this.loadMovements(null);
           });    
       }
     })
   }
 
-  loadMovements() {
-    this.movements = [];
-
+  loadMovements(change: any) {
+    this.movements$.next([]);
+    if (change && change.value) {
+      this.selectedCardId$.next(change.value)
+    }
+    this.selectedCardId = this.selectedCardId$.value
     this.cardsService.movements(
-      this.selectedCard!._id,
+      this.selectedCardId$.value,
       15,
       0
     ).subscribe(dto => {
-      this.movements = [...dto.data];
+      this.movements$.next([...dto.data]);
       this.loadBalance();
     });
   }
 
   loadBalance() {
-    this.balance = 0;
-    this.balanceColor = 'white';
+    this.balance$.next(0);
+    this.balanceColor$.next('white');
 
-    this.movements.forEach(m => {
+    this.movements$.value.forEach(m => {
       const sign = m.type == 'in' ? 1 : -1;
-      this.balance = this.balance + (sign * m.amount);
+      this.balance$.next(this.balance$.value + (sign * m.amount));
     });
-    if (this.balance == 0) this.balanceColor = "white";
-    else if (this.balance > 0) this.balanceColor = "chartreuse";
-    else this.balanceColor = "red";
+    if (this.balance$.value == 0) this.balanceColor$.next("white");
+    else if (this.balance$.value > 0) this.balanceColor$.next("chartreuse");
+    else this.balanceColor$.next("red");
   }
 }

@@ -41,7 +41,7 @@
     <mat-label>Seleziona una carta</mat-label>
     <mat-select matInput
                 formControlName="cardId">
-      <mat-option *ngFor="let card of cards" [value]="card._id">{{card.number}}</mat-option>
+      <mat-option *ngFor="let card of cards$ | async" [value]="card._id">{{card.number}}</mat-option>
     </mat-select>
     <mat-error *ngIf="form.get('cardId')!.hasError('required')">Campo richiesto</mat-error>
   </mat-form-field>

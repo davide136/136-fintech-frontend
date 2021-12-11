@@ -1,0 +1,32 @@
+<form #formRef="ngForm" [formGroup]="form">
+
+  <mat-form-field appearance="fill" style="width:20%">
+    <mat-label>Codice Tributo</mat-label>
+    <input matInput formControlName="cod_tributo">
+    <mat-error *ngIf="form.get('cod_tributo')!.hasError('required')">Campo richiesto</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" style="width:20%">
+    <mat-label>Anno di riferimento</mat-label>
+    <input matInput formControlName="ref_year">
+    <mat-error *ngIf="form.get('ref_year')!.hasError('required')!">Campo richiesto</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" style="width:40%">
+    <mat-label>Importo di debito</mat-label>
+    <input matInput formControlName="debt">
+    <mat-error *ngIf="form.get('debt')!.hasError('required')!">Campo richiesto</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" style="width:20%">
+    <mat-label>Importo di credito</mat-label>
+    <input matInput formControlName="credit">
+    <mat-error *ngIf="form.get('credit')!.hasError('required')">Campo richiesto</mat-error>
+  </mat-form-field>
+
+</form>
+
+
+<button mat-mini-fab color="warn">
+  <mat-icon>delete</mat-icon>
+</button>

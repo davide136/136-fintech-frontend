@@ -5,6 +5,8 @@ import { AppointmentsService } from '../../../api/appointments.service';
 import { DayWithSlot, DayWithSlots } from '../../../shared/models/days-with-slot';
 import { AppointmentsFormComponent } from './appointments-form/appointments-form.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { BehaviorSubject, combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'ac-appointments',
@@ -18,9 +20,14 @@ export class AppointmentsComponent implements OnInit {
   @ViewChildren(AppointmentsFormComponent)
   formComponent!: QueryList<AppointmentsFormComponent>;
 
-  locations: Location[] = [];
-  selectedLocation: Location | null = null;
-  selectedLocationSlots: DayWithSlots[] = [];
+  locations$ = new BehaviorSubject<Location[]>([]);
+  selectedLocationId$ = new BehaviorSubject<string>('');
+  selectedLocation$ = combineLatest([this.locations$, this.selectedLocationId$]).pipe(
+    map(([locations, id]) => {
+      return locations.find(loc => loc._id === id)
+    })
+  );
+  selectedLocationSlots$ = new BehaviorSubject<DayWithSlots[]>([]);
 
   constructor(
     public appointmentsService: AppointmentsService,
@@ -34,22 +41,22 @@ export class AppointmentsComponent implements OnInit {
   getLocations() {
     this.appointmentsService
       .getLocations()
-      .subscribe(res => this.locations = res);
+      .subscribe(res => this.locations$.next(res));
   }
 
   newAppointment(loc: Location) {
     this.appointmentsService.getSlots(loc._id)
       .subscribe(slots => {
-        this.selectedLocationSlots = slots;
-        this.selectedLocation = loc;
+        this.selectedLocationSlots$.next(slots);
+        this.selectedLocationId$.next(loc._id);
         this.drawer.toggle(true);
       })
   }
 
   openedChangeEvent(open: boolean) {
     if (!open) {
-      this.selectedLocation = null;
-      this.selectedLocationSlots = [];
+      this.selectedLocationId$.next('');
+      this.selectedLocationSlots$.next([]);
       this.formComponent.forEach(c => c.reset());
     }
   }

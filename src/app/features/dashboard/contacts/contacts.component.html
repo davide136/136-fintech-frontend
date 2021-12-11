@@ -1,5 +1,5 @@
 <ng-container *ngIf="modalView == 'contact-list'">
-  <ac-contact-list [contacts]='contacts'
+  <ac-contact-list [contacts]='contacts$ | async'
                    (done)='fillWithSelected($event)'
                    (edit)='editHandler($event)'
                    (delete)='deleteHandler($event)'></ac-contact-list>
@@ -7,7 +7,7 @@
 </ng-container>
 <ng-container *ngIf="modalView == 'contact-form'">
   <ac-contact-form
-                   [selectedContact]="selectedContact"
+                   [selectedContact]="selectedContact$ | async"
                    (submit)="saveHandler($event)"
                    (cancel)="cancelHandler()">
   </ac-contact-form>

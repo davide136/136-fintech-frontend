@@ -3,8 +3,9 @@ import { MatDrawer } from '@angular/material/sidenav';
 import { Card, CardDto } from '../../../shared/models/card';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CardsService } from '../../../api/cards.service';
-import { mergeMap } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
+import { map, mergeMap } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'ac-card',
@@ -14,30 +15,31 @@ import { Subscription } from 'rxjs';
 export class CardComponent {
   @ViewChild('drawer') drawer!: MatDrawer;
 
-  cards: Card[] = [];
-  cards$ = this.cardsService.getAll().pipe(
-    mergeMap(res =>
-      this.cards = res
-    )
-  )
-  cardsSub: Subscription | null = null;
-  selectedCard: Card | null | undefined = null;
+  cards$ = new BehaviorSubject<Card[]>([]);
+  selectedCardId$ = new BehaviorSubject<string>('');
+  selectedCard$ = combineLatest([this.cards$, this.selectedCardId$]).pipe(
+    map(([cards, id]) => {
+      return cards.find(card => card._id === id)
+    })
+  );
 
   constructor(
     private _snackBar: MatSnackBar,
     private cardsService: CardsService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
   ) { }
 
   ngOnInit() {
-    this.cardsSub = this.cards$.subscribe();
+    this.loadCards();
   }
 
-  ngOnChanges() {
-    this.cardsSub = this.cards$.subscribe();
-  }
-
-  ngOnDestroy() {
-    this.cardsSub?.unsubscribe;
+  loadCards() {
+    this.cardsService.getAll().pipe(
+      map(res =>
+        this.cards$.next(res)
+      )
+    ).subscribe();
   }
 
   addCard() {
@@ -56,21 +58,27 @@ export class CardComponent {
   deleteHandler(_id: string) {
     this.cardsService.delete(_id).subscribe(res => {
       if (res) {
-        this.cards = this.cards.filter(card => card._id != _id);
+        this.cards$.next(this.cards$.value.filter(card => card._id != _id));
+        this._snackBar.open('La carta selezionata è stata elimintata', 'Nascondi');
       }
-      else console.log('An error occurred')
+      else this._snackBar.open('Si è verificato un errore', 'Nascondi');
     })
   }
 
-  movementsHandler(card: Card) {
-    this.selectedCard = card;
+  movementsHandler(id: string) {
+    this.selectedCardId$.next(id);
+    console.log('id', id)
+    console.log('router', this.router)
+    this.router.navigate([
+      '../movements/'+id,
+    ], { relativeTo: this.activatedRoute })
   }
 
   insert(dto: CardDto) {
     this.cardsService.add(dto).subscribe(
       res => {
         if (res) {
-          this.cards = [...this.cards, res];
+          this.cards$.next([...this.cards$.value, res]);
           this._snackBar.open('Lista carte aggiornata', 'Nascondi');
         }
         else
@@ -81,7 +89,7 @@ export class CardComponent {
   }
 
   end() {
-    this.selectedCard = null;
+    this.selectedCardId$.next('');
     this.drawer.toggle(false);
   }
 }

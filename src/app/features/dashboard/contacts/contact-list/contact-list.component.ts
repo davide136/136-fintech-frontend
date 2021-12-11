@@ -7,7 +7,7 @@ import { Contact } from '../../../../shared/models/contact';
   styleUrls: ['./contact-list.component.scss']
 })
 export class ContactListComponent implements OnInit, OnDestroy {
-  @Input() contacts: Contact[] = [];
+  @Input() contacts: Contact[] | null = [];
 
   @Output() done = new EventEmitter<Contact>();
   @Output() edit = new EventEmitter<Contact>();
