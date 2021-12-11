@@ -24,16 +24,17 @@
   <mat-form-field appearance="fill">
     <mat-label>IBAN</mat-label>
     <input matInput
-           maxlength="34"
+           maxlength="27"
            formControlName="iban">
     <mat-error *ngIf="form.get('iban')!.hasError('required')">Campo richiesto</mat-error>
+    <mat-error *ngIf="form.get('iban')!.hasError('invalidIBAN')">IBAN non valido</mat-error>
   </mat-form-field>
   <mat-form-field appearance="fill">
     <mat-label>Amount</mat-label>
-    <input type="number"
-           matInput
+    <input matInput
            formControlName="amount">
     <mat-error *ngIf="form.get('amount')!.hasError('required')">Campo richiesto</mat-error>
+    <mat-error *ngIf="form.get('amount')!.hasError('validAmount')">Valore inserito non valido</mat-error>
   </mat-form-field>
 
   <mat-form-field appearance="fill">
@@ -44,8 +45,10 @@
     </mat-select>
     <mat-error *ngIf="form.get('cardId')!.hasError('required')">Campo richiesto</mat-error>
   </mat-form-field>
-
-
+  
+  <mat-error *ngIf="form.hasError('notEnoughBalance')">Non ci sono fondi sufficienti per procedere con l'operazione.</mat-error>
+  <mat-error *ngIf="form.hasError('cardDoesNotExist')">Carta non trovata.</mat-error>
+  <br />
   <button mat-raised-button
           color="primary"
           (click)="onSubmit()"

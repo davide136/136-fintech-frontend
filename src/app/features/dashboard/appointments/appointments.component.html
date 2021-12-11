@@ -3,9 +3,10 @@
               position="end"
               (openedChange)="openedChangeEvent($event)"
               >
-    <ac-appointements-form (closeDrawer)="drawer.toggle(false)"
-                           [location]="selectedLocation">
-    </ac-appointements-form>
+    <ac-appointments-form  [location]="selectedLocation"
+                           [selectedLocationSlots]="selectedLocationSlots"
+                            (submit)="submitHandle($event)">
+    </ac-appointments-form>
 
   </mat-drawer>
 

@@ -1,5 +1,6 @@
 <mat-form-field style="width:100%">
-  <mat-select [(value)]="selectedCard">
+  <mat-select [(value)]="selectedCard"
+              (selectionChange)="loadMovements()">
     <mat-option *ngFor="let card of cards"
                 [value]="card">
       {{card.number}}

@@ -63,7 +63,7 @@ var appMenu: Link[] = [
   {
     label: 'Tasse',
     icon: 'summarize',
-    link: './dashboard/contacts',
+    link: './dashboard/taxes',
     index: 4
   },
   {

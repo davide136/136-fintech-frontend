@@ -8,13 +8,13 @@ import { MaterialModule } from '../../../shared/material/material.module';
 
 @NgModule({
   declarations: [
-    TransferComponent
+    TransferComponent,
   ],
   providers: [
     CurrencyPipe,
   ],
   imports: [
-    CommonModule,
+    CommonModule, 
     TransferRoutingModule,
     MaterialModule,
   ]

@@ -44,20 +44,29 @@ export class MovementsComponent {
                   this.selectedCard = c;
               });
             }
-            this.cardsService.movements(
-              this.selectedCard!._id,
-              15,
-              0
-            ).subscribe(dto => {
-              this.movements = [...dto.data];
-              this.loadBalance();
-            });
+            this.loadMovements();
           });    
       }
     })
   }
 
+  loadMovements() {
+    this.movements = [];
+
+    this.cardsService.movements(
+      this.selectedCard!._id,
+      15,
+      0
+    ).subscribe(dto => {
+      this.movements = [...dto.data];
+      this.loadBalance();
+    });
+  }
+
   loadBalance() {
+    this.balance = 0;
+    this.balanceColor = 'white';
+
     this.movements.forEach(m => {
       const sign = m.type == 'in' ? 1 : -1;
       this.balance = this.balance + (sign * m.amount);

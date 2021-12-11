@@ -10,6 +10,10 @@ import { Contact } from '../../../shared/models/contact';
 import { CardsService } from '../../../api/cards.service';
 import { CurrencyPipe } from '@angular/common';
 import { TransferService } from '../../../api/transfer.service';
+import { amountValidator } from '../../../shared/validators/amount.validator';
+import { TransferValidator } from '../../../shared/validators/transfer.validator';
+import { IBANValidator } from '../../../shared/validators/iban.validator';
+import { CardIdValidator } from '../../../shared/validators/card-id.validator';
 
 @Component({
   selector: 'ac-transfer',
@@ -26,15 +30,16 @@ export class TransferComponent implements OnInit {
     surname: ['', [Validators.required]],
     iban: ['', [
       Validators.required,
-      Validators.minLength(34),
-      Validators.maxLength(34),
+      Validators.maxLength(27),
+      IBANValidator,
     ]],
     amount: ['', [
       Validators.required,
       Validators.minLength(1),
+      amountValidator,
     ]],
     cardId: ['', [Validators.required]],
-  });
+  },  );
 
   constructor(
     private fb: FormBuilder,
@@ -43,7 +48,14 @@ export class TransferComponent implements OnInit {
     private cardsService: CardsService,
     private transferService: TransferService,
     private _snackBar: MatSnackBar,
-  ) { }
+    private transferValidator: TransferValidator,
+    private cardIdValidator: CardIdValidator,
+  ) {
+    this.form.setAsyncValidators([
+      transferValidator.validate(),
+      cardIdValidator.validate(),
+    ])
+  }
 
   ngOnInit(): void {
     this.cardsService.getAll().subscribe(
@@ -90,7 +102,6 @@ export class TransferComponent implements OnInit {
   }
 
   transfer() {
-    console.log('transferring log', this.form.value);
     this.transferService.transfer(this.form.value)
       .subscribe(res => {
         if (res) {

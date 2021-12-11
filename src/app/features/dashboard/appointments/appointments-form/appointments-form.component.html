@@ -4,15 +4,19 @@
   <mat-form-field class="full-width"
                   appearance="fill">
     <mat-label>Scegli una data</mat-label>
-    <input matInput [matDatepicker]="picker" formControlName="date">
+    <input matInput
+           [matDatepicker]="picker"
+           formControlName="date"
+           (dateInput)="onDateSelected($event)"
+           [matDatepickerFilter]="dateFilter">
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
 </form>
 
-<div *ngIf='form.get("date")?.value'>
+<div *ngIf='selectedDate'>
   <mat-selection-list [multiple]="false">
-    <mat-list-option *ngFor="let hour of firstDecember.slots"
+    <mat-list-option *ngFor="let hour of selectedDate.slots"
                      [value]="hour"
                      (click)="hourSelected(hour)">
       {{hour}}:00

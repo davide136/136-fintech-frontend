@@ -23,9 +23,10 @@
   <mat-form-field appearance="fill">
     <mat-label>IBAN</mat-label>
     <input matInput
-           maxlength="34"
+           maxlength="27"
            formControlName="iban">
     <mat-error *ngIf="form.get('iban')!.hasError('required')">Campo richiesto</mat-error>
+    <mat-error *ngIf="form.get('iban')!.hasError('invalidIBAN')">IBAN non valido</mat-error>
   </mat-form-field>
 
 

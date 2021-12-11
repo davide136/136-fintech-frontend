@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Contact } from '../../../../shared/models/contact';
 import { ResetForm } from '../../../../shared/utils/reset-form';
+import { IBANValidator } from '../../../../shared/validators/iban.validator';
 
 @Component({
   selector: 'ac-contact-form',
@@ -26,8 +27,8 @@ export class ContactFormComponent implements OnChanges {
     surname: ['', [Validators.required]],
     iban: ['', [
       Validators.required,
-      Validators.minLength(34),
-      Validators.maxLength(34),
+      Validators.maxLength(27),
+      IBANValidator
     ]],
   });
 

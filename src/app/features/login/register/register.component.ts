@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, ValidationErrors, Validators } from '@angular/forms';
-import Validation from '../../../shared/utils/validation';
+import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
+import { equalFieldsValidator } from '../../../shared/validators/equal-fields.validator';
 
 @Component({
   selector: 'ac-register',
@@ -19,7 +19,7 @@ export class RegisterComponent implements OnInit {
     password2: ['', [Validators.required ]],
   },
     {
-      validators: [Validation.match('password', 'password2')]
+      validators: [equalFieldsValidator('password', 'password2')]
     }
   );
   visibility = false;
