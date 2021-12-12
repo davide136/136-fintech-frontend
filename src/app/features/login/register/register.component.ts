@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from '../../../api/auth.service';
 import { equalFieldsValidator } from '../../../shared/validators/equal-fields.validator';
 
 @Component({
@@ -25,19 +27,27 @@ export class RegisterComponent implements OnInit {
   visibility = false;
   submitted = false;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router,
+  ) { }
 
   ngOnInit(): void {
   }
 
   onSubmit() {
-    this.submitted = true;
-
-    if (this.form.invalid) {
-      return;
-    }
-
-    console.log(this.form.value);
+    this.authService.register({
+      email: this.form.get('email')!.value,
+      name: this.form.get('name')!.value,
+      password: this.form.get('password')!.value,
+      surname: this.form.get('surname')!.value,
+    }).subscribe(res => {
+      if (res) {
+        this.submitted = true;
+        this.router.navigate(['/login'])
+      }
+    })
   }
 
   onReset(): void {

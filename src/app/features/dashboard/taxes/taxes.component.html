@@ -1,54 +1,54 @@
-<form #formRef="ngForm" [formGroup]="form" (ngSubmit)="onSubmit()">
+<form #formRef="ngForm" [formGroup]="form">
 
   <h3>Contribuente</h3>
 
   <div formGroupName="contribuente" class="contribuente">
     <mat-form-field appearance="fill">
       <mat-label>Codice Fiscale</mat-label>
-      <input matInput formControlName="cf">
-      <mat-error *ngIf="form.get('contribuente')!.get('cf')!.hasError('required')">Campo richiesto</mat-error>
-      <mat-error *ngIf="form.get('contribuente')!.get('cf')!.hasError('invalidCF')">Codice fiscale non valido</mat-error>
+      <input matInput formControlName="codiceFiscale">
+      <mat-error *ngIf="form.get('contribuente')!.get('codiceFiscale')!.hasError('required')">Campo richiesto</mat-error>
+      <mat-error *ngIf="form.get('contribuente')!.get('codiceFiscale')!.hasError('invalidCF')">Codice fiscale non valido</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Cognome</mat-label>
-      <input matInput formControlName="surname">
-      <mat-error *ngIf="form.get('contribuente')!.get('surname')!.hasError('required')!">Campo richiesto</mat-error>
+      <input matInput formControlName="cognome">
+      <mat-error *ngIf="form.get('contribuente')!.get('cognome')!.hasError('required')!">Campo richiesto</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Nome</mat-label>
-      <input matInput formControlName="name">
-      <mat-error *ngIf="form.get('contribuente')!.get('name')!.hasError('required')!">Campo richiesto</mat-error>
+      <input matInput formControlName="nome">
+      <mat-error *ngIf="form.get('contribuente')!.get('nome')!.hasError('required')!">Campo richiesto</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Data di nascita</mat-label>
-      <input matInput formControlName="birthday" [matDatepicker]="birthday">
-      <mat-datepicker-toggle matSuffix [for]="birthday"></mat-datepicker-toggle>
-      <mat-datepicker #birthday></mat-datepicker>
-      <mat-error *ngIf="form.get('contribuente')!.get('birthday')!.hasError('required')">Campo richiesto</mat-error>
+      <input matInput formControlName="dataDiNascita" [matDatepicker]="dataDiNascita">
+      <mat-datepicker-toggle matSuffix [for]="dataDiNascita"></mat-datepicker-toggle>
+      <mat-datepicker #dataDiNascita></mat-datepicker>
+      <mat-error *ngIf="form.get('contribuente')!.get('dataDiNascita')!.hasError('required')">Campo richiesto</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Sesso</mat-label>
-      <mat-select formControlName="gender">
+      <mat-select formControlName="sesso">
         <mat-option value="F">Femmina</mat-option>
         <mat-option value="M">Maschio</mat-option>
       </mat-select>
-      <mat-error *ngIf="form.get('contribuente')!.get('gender')!.hasError('required')">Campo richiesto</mat-error>
+      <mat-error *ngIf="form.get('contribuente')!.get('sesso')!.hasError('required')">Campo richiesto</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Provincia di nascita</mat-label>
-      <input matInput formControlName="county">
-      <mat-error *ngIf="form.get('contribuente')!.get('county')!.hasError('required')">Campo richiesto</mat-error>
+      <input matInput formControlName="provinciaDiNascita">
+      <mat-error *ngIf="form.get('contribuente')!.get('provinciaDiNascita')!.hasError('required')">Campo richiesto</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Comune di nascita</mat-label>
-      <input matInput formControlName="city">
-      <mat-error *ngIf="form.get('contribuente')!.get('city')!.hasError('required')">Campo richiesto</mat-error>
+      <input matInput formControlName="comuneDiNascita">
+      <mat-error *ngIf="form.get('contribuente')!.get('comuneDiNascita')!.hasError('required')">Campo richiesto</mat-error>
     </mat-form-field>
   </div>
 
@@ -60,40 +60,66 @@
             (click)="addErario()">
       <mat-icon>add</mat-icon>
     </button>
-    <div formArrayName="erario"  class="erario">
-      <div *ngFor="let e of erario.controls; let i = index"
-           [formGroupName]="i">
-        <div>
-          <mat-form-field appearance="fill" style="width:20%">
-            <mat-label>Codice Tributo</mat-label>
-            <input matInput formControlName="cod_tributo">
-            <mat-error *ngIf="this.requireErario('cod_tributo',i)">Campo richiesto</mat-error>
-          </mat-form-field>
+    <mat-grid-list cols="5" rowHeight="5.5rem" formArrayName="erario" class="erario">
+      <ng-container *ngFor="let e of erario.controls; let i = index"
+                    [formGroupName]="i">
+        <ng-container>
+          <mat-grid-tile>
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Codice Tributo</mat-label>
+              <input matInput formControlName="codiceTributo">
+              <mat-error *ngIf="this.erario.controls[i].get('codiceTributo')!.hasError('required')">Campo richiesto</mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
 
-          <mat-form-field appearance="fill" style="width:20%">
-            <mat-label>Anno di riferimento</mat-label>
-            <input matInput formControlName="ref_year">
-            <mat-error *ngIf="requireErario('ref_year',i)">Campo richiesto</mat-error>
-          </mat-form-field>
+          <mat-grid-tile>
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Anno di riferimento</mat-label>
+              <input type="number" matInput formControlName="anno"
+                     maxlength="4">
+              <mat-error *ngIf="this.erario.controls[i].get('anno')!.hasError('required')">Campo richiesto</mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
 
-          <mat-form-field appearance="fill" style="width:40%">
-            <mat-label>Importo di debito</mat-label>
-            <input matInput formControlName="debt">
-            <mat-error *ngIf="requireErario('debt',i)">Campo richiesto</mat-error>
-          </mat-form-field>
+          <mat-grid-tile>
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Importo di debito</mat-label>
+              <input type="number" matInput formControlName="debito"
+                     (change)="erarioDebtChange()">
+              <mat-error *ngIf="this.erario.controls[i].get('debito')!.hasError('required')">Campo richiesto</mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
 
-          <mat-form-field appearance="fill" style="width:20%">
-            <mat-label>Importo di credito</mat-label>
-            <input matInput formControlName="credit">
-            <mat-error *ngIf="requireErario('credit',i)">Campo richiesto</mat-error>
-          </mat-form-field>
-        </div>
-        <button mat-mini-fab color="warn"
-                (click)="removeErario(i)">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </div>      
-    </div>
+          <mat-grid-tile>
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Importo di credito</mat-label>
+              <input type="number" matInput formControlName="credito"
+                     (change)="erarioCreditChange()">
+              <mat-error *ngIf="this.erario.controls[i].get('credito')!.hasError('required')">Campo richiesto</mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <button mat-mini-fab color="warn"
+                    (click)="removeErario(i)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-grid-tile>
+        </ng-container>
+      </ng-container>
+      <mat-grid-tile></mat-grid-tile>
+      <mat-grid-tile></mat-grid-tile>
+      <mat-grid-tile>
+        <ng-container *ngIf="(totaliErario$ | async)![0]">
+          Totale debito: {{(totaliErario$ | async)![0] | currency:'EUR'}}
+        </ng-container>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <ng-container *ngIf="(totaliErario$ | async)![1]">
+          Totale credito: {{(totaliErario$ | async)![1] | currency:'EUR'}}
+        </ng-container>
+      </mat-grid-tile>
+      <mat-grid-tile></mat-grid-tile>
+    </mat-grid-list>
   </div>
 
 
@@ -104,69 +130,106 @@
             (click)="addINPS()">
       <mat-icon>add</mat-icon>
     </button>
-    <div formArrayName="inps" class="inps">
-      <div *ngFor="let e of inps.controls; let i = index">
-        <div [formGroupName]="i">
-          <mat-form-field appearance="fill" style="width: 14.28%">
-            <mat-label>Codice Sede</mat-label>
-            <input matInput formControlName="cod_sede">
-            <mat-error *ngIf="this.inps.controls[i].get('cod_sede')!.hasError('required')">Campo richiesto</mat-error>
-          </mat-form-field>
+    <mat-grid-list cols="8" rowHeight="5.5rem" formArrayName="inps" class="inps">
+      <ng-container *ngFor="let e of inps.controls; let i = index">
+        <ng-container [formGroupName]="i">
 
-          <mat-form-field appearance="fill" style="width: 14.28%">
-            <mat-label>Causale contributo</mat-label>
-            <input matInput formControlName="tax_subject">
-            <mat-error *ngIf="this.inps.controls[i].get('tax_subject')!.hasError('required')">Campo richiesto</mat-error>
-          </mat-form-field>
+          <mat-grid-tile>
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Codice Sede</mat-label>
+              <input matInput formControlName="codiceSede">
+              <mat-error *ngIf="this.inps.controls[i].get('codiceSede')!.hasError('required')">Campo richiesto</mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
 
-          <mat-form-field appearance="fill" style="width: 14.28%">
-            <mat-label>Codice INPS</mat-label>
-            <input matInput formControlName="inps_code">
-            <mat-error *ngIf="this.inps.controls[i].get('inps_code')!.hasError('required')">Campo richiesto</mat-error>
-          </mat-form-field>
+          <mat-grid-tile>
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Causale contributo</mat-label>
+              <input matInput formControlName="causaleContributo">
+              <mat-error *ngIf="this.inps.controls[i].get('causaleContributo')!.hasError('required')">Campo richiesto</mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
 
-          <mat-form-field appearance="fill" style="width: 14.28%">
-            <mat-label>Da</mat-label>
-            <input matInput formControlName="from" [max]="getToDate(i)" [matDatepicker]="from">
-            <mat-datepicker-toggle matSuffix [for]="from"></mat-datepicker-toggle>
-            <mat-datepicker #from></mat-datepicker>
-            <mat-error *ngIf="this.inps.controls[i].get('from')!.hasError('required')">Campo richiesto</mat-error>
-          </mat-form-field>
+          <mat-grid-tile>
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Codice INPS</mat-label>
+              <input matInput formControlName="codiceInps">
+              <mat-error *ngIf="this.inps.controls[i].get('codiceInps')!.hasError('required')">Campo richiesto</mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
 
-          <mat-form-field appearance="fill" style="width: 14.28%">
-            <mat-label>A</mat-label>
-            <input matInput formControlName="to" [min]="getFromDate(i)" [matDatepicker]="to">
-            <mat-datepicker-toggle matSuffix [for]="to"></mat-datepicker-toggle>
-            <mat-datepicker #to></mat-datepicker>
-            <mat-error *ngIf="this.inps.controls[i].get('to')!.hasError('required')">Campo richiesto</mat-error>
-          </mat-form-field>
+          <mat-grid-tile>
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Da</mat-label>
+              <input matInput formControlName="da" [max]="getToDate(i)" [matDatepicker]="da">
+              <mat-datepicker-toggle matSuffix [for]="da"></mat-datepicker-toggle>
+              <mat-datepicker #da></mat-datepicker>
+              <mat-error *ngIf="this.inps.controls[i].get('da')!.hasError('required')">Campo richiesto</mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
 
-          <mat-form-field appearance="fill" style="width: 14.28%">
-            <mat-label>Debito</mat-label>
-            <input matInput formControlName="debit">
-            <mat-error *ngIf="this.inps.controls[i].get('debit')!.hasError('required')">Campo richiesto</mat-error>
-          </mat-form-field>
+          <mat-grid-tile>
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>A</mat-label>
+              <input matInput formControlName="a" [min]="getFromDate(i)" [matDatepicker]="a">
+              <mat-datepicker-toggle matSuffix [for]="a"></mat-datepicker-toggle>
+              <mat-datepicker #a></mat-datepicker>
+              <mat-error *ngIf="this.inps.controls[i].get('a')!.hasError('required')">Campo richiesto</mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
 
-          <mat-form-field appearance="fill" style="width:14.28%">
-            <mat-label>Credito</mat-label>
-            <input matInput formControlName="credit">
-            <mat-error *ngIf="this.inps.controls[i].get('credit')!.hasError('required')">Campo richiesto</mat-error>
-          </mat-form-field>
-        </div>
-        <button mat-mini-fab color="warn"
-                (click)="removeINPS(i)">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </div>
-    </div>
+          <mat-grid-tile>
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Debito</mat-label>
+              <input type="number" matInput formControlName="debito"
+                     (change)="inpsDebtChange()">
+              <mat-error *ngIf="this.inps.controls[i].get('debito')!.hasError('required')">Campo richiesto</mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Credito</mat-label>
+              <input type="number" matInput formControlName="credito"
+                     (change)="inpsCreditChange()">
+              <mat-error *ngIf="this.inps.controls[i].get('credito')!.hasError('required')">Campo richiesto</mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <button mat-mini-fab color="warn"
+                    (click)="removeINPS(i)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-grid-tile>
+        </ng-container>
+      </ng-container>
+      <mat-grid-tile></mat-grid-tile>
+      <mat-grid-tile></mat-grid-tile>
+      <mat-grid-tile></mat-grid-tile>
+      <mat-grid-tile></mat-grid-tile>
+      <mat-grid-tile></mat-grid-tile>
+      <mat-grid-tile>
+        <ng-container *ngIf="(totaliInps$ | async)![0]">
+          Totale credito: {{(totaliInps$ | async)![0] | currency:'EUR'}}
+        </ng-container>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <ng-container *ngIf="(totaliInps$ | async)![1]">
+          Totale credito: {{(totaliInps$ | async)![1] | currency:'EUR'}}
+        </ng-container>
+      </mat-grid-tile>
+      <mat-grid-tile></mat-grid-tile>
+    </mat-grid-list>
+  </div>
+  <div>
+    <h2>Saldo totale:  {{totale$ | async | currency:'EUR'}}</h2>
+
+    <button mat-raised-button type="button" class="full-width" color="primary"
+            [disabled]="form.invalid"            
+            (click)="onSubmit()">
+      Invia
+    </button>
   </div>
 </form>
 
 
-<div>
-  <h2>Saldo totale:  {{0 | currency:'EUR'}}</h2>
-
-  <button mat-raised-button type="button" class="full-width" color="primary">
-    Invia
-  </button>
-</div>

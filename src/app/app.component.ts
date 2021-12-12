@@ -1,32 +1,33 @@
 import {  Component, HostListener, ViewChild } from '@angular/core';
 import { MatDrawer } from '@angular/material/sidenav';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BehaviorSubject, combineLatest } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+import { AuthService } from './api/auth.service';
+import { User, UserStore } from './core/stores/user.store';
 
 export type Link = {
   label: string,
   icon: string,
   link: string,
-  index: number
+  index: number,
+  user: string,
 }
 
 export const MIN_WIDTH_FOR_SHOWING_MENU = 900;
 var loginMenu: Link[] = [
   {
-    label: 'Dashboard',
-    icon: 'home',
-    link: './dashboard',
-    index: 0
-  },
-  {
     label: 'Accedi',
     icon: 'person',
     link: './login/sign-in',
-    index: 1
+    user: '',
+    index: 0
   }, {
     label: 'Registrati',
     icon: 'person_add',
     link: './login/register',
-    index: 2
+    user: '',
+    index: 1
   }
 ];
 var appMenu: Link[] = [
@@ -34,43 +35,50 @@ var appMenu: Link[] = [
     label: 'Dashboard',
     icon: 'home',
     link: './dashboard',
+    user: '',
     index: 0
   },
   {
     label: 'Carte',
     icon: 'credit_card',
     link: './dashboard/card',
+    user: '',
     index: 1
   },
   {
     label: 'Movimenti',
     icon: 'receipt_long',
     link: './dashboard/movements',
-    index: 1
+    user: '',
+    index: 2
   },
   {
     label: 'Trasferisci',
     icon: 'paid',
     link: './dashboard/transfer',
-    index: 2
+    user: '',
+    index: 3
   },
   {
     label: 'Appuntamenti',
     icon: 'event',
     link: './dashboard/appointments',
-    index: 3
+    user: '',
+    index: 4
   },
   {
     label: 'Tasse',
     icon: 'summarize',
     link: './dashboard/taxes',
-    index: 4
+    user: '',
+    index: 5
   },
   {
     label: 'Logout',
     icon: 'contacts',
-    link: './dashboard/logout',
-    index: 5
+    link: './login/logout',
+    user: '',
+    index: 6
   },
 ];
 
@@ -81,15 +89,17 @@ var appMenu: Link[] = [
 })
 export class AppComponent {
   @ViewChild('drawer', { static: true }) drawer!: MatDrawer;
-  navLinks: Link[] = appMenu;
   activeLinkIndex = -1;
   getScreenWidth: number = 0;
   MIN_WIDTH_FOR_SHOWING_MENU = MIN_WIDTH_FOR_SHOWING_MENU;
+  loggedUser$ = new BehaviorSubject<User | null>(null);
+  navLinks$ = new BehaviorSubject<Link[]>(loginMenu);
 
-  constructor(private router: Router) {
-    this.router.events.subscribe(() => {
-      this.activeLinkIndex = this.navLinks.indexOf(this.navLinks.find(tab => tab.link === '.' + this.router.url)!);
-    });
+  constructor(
+    private router: Router,
+    private userStore: UserStore,
+  ) {    
+
   }
 
 
@@ -99,6 +109,24 @@ export class AppComponent {
       this.drawer.toggle(false);
     else
       this.drawer.toggle(true);
+
+    this.router.events.subscribe(() => {
+      this.activeLinkIndex = this.navLinks$.value.indexOf(
+        this.navLinks$.value.find(tab => tab.link === '.' + this.router.url)!);
+    });
+    this.userStore.user$.pipe(
+      map(user => {
+        this.loggedUser$.next(user);
+        if (user) {
+          appMenu[6].user = user.displayName;
+          this.navLinks$.next(appMenu);
+        }
+        else {
+          appMenu[6].user = '';
+          this.navLinks$.next(loginMenu);
+        }
+      })
+    ).subscribe()
   }
 
   @HostListener('window:resize', ['$event'])

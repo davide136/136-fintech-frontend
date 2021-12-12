@@ -10,7 +10,7 @@ export class TaxesService {
 
   constructor(private http: HttpClient) { }
 
-  taxes(): Observable<boolean> {
-    return this.http.post<boolean>(environment.apiUrl +'/taxes', "TODO");
+  taxes(dto: any): Observable<boolean> {
+    return this.http.post<boolean>(environment.apiUrl + '/taxes', { dto });
   }
 }

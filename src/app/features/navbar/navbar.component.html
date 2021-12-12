@@ -3,6 +3,11 @@
                    [routerLink]="link.link"
                    routerLinkActive>
     <mat-icon mat-list-icon>{{link.icon}}</mat-icon>
-    {{link.label}}
+    <div *ngIf="link.user">
+      <b>{{link.user}}</b>
+    </div>
+    <div>
+      {{link.label}}
+    </div>
   </mat-list-option>
 </mat-selection-list>
