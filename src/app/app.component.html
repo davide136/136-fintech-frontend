@@ -1,7 +1,7 @@
 <mat-drawer-container autosize>
   <mat-drawer #drawer mode="side" opened>
     <ac-navbar [navLinks]="navLinks$ | async"
-               [activeLinkIndex]="activeLinkIndex"></ac-navbar>
+               [activeLinkIndex]="(activeLinkIndex$ | async)!"></ac-navbar>
   </mat-drawer>
 
   <mat-toolbar>
@@ -10,7 +10,7 @@
             (click)="drawer.toggle()">
       <mat-icon>menu</mat-icon>
     </button>
-    <span *ngIf="(navLinks$ | async)![activeLinkIndex]">{{(navLinks$ | async)![activeLinkIndex].label}}</span>
+    <span *ngIf="(navLinks$ | async)![(activeLinkIndex$ | async)!]">{{(navLinks$ | async)![(activeLinkIndex$ | async)!].label}}</span>
   </mat-toolbar>
   <ac-container>
     <router-outlet>
